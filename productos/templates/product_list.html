@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +46,9 @@
                 <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
                    {% csrf_token %}
                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
+
+                   <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago </a>
+                                       
                  </form>
 
 

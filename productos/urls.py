@@ -8,8 +8,10 @@ urlpatterns = [
     path("create/", views.product_create, name="product-create"),
     path("edit/<int:pk>/", views.product_edit, name="product-edit"),
     path("delete/<int:pk>/", views.product_delete, name="product-delete"),
-
-    # path("pago/<int:product_id>/", create_preference, name="crear-preferencia"),
  
+    path('checkout/<int:product_id>/', views.checkout, name='checkout'),
+    path('pago/exitoso/', views.pago_exitoso, name='pago_exitoso'),
+    path('pago/fallido/', views.pago_fallido, name='pago_fallido'),
+    path('pago/pendiente/', views.pago_pendiente, name='pago_pendiente'),
 
 ]

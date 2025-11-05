@@ -1,6 +1,8 @@
 from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
+from decouple import config
+
 
 env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env()  # lee .env si existe
@@ -10,6 +12,9 @@ SECRET_KEY = env("SECRET_KEY", default="dev-secret-no-usar-en-prod")
 DEBUG = env("DEBUG", default=True)
 ALLOWED_HOSTS = ["*"]
 
+MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
+MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
+
 INSTALLED_APPS = [
     # Django
     "django.contrib.admin",
@@ -18,6 +23,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.humanize', 
+
     "django.contrib.sites",
 
     # Terceros

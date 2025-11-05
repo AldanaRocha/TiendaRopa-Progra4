@@ -1,22 +1,20 @@
- {% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Editar mi perfil{% endblock %}
 {% block content %}
 
 <h2>{{ request.user.username }}</h2><br>
-
-<p>{{ profile.bio }}</p><br>
-
 {% if profile.avatar %}
   <img src="{{ profile.avatar.url }}" alt="avatar" style="width: 150px; height: auto;"><br>
 
 {% endif %}
 <br>
+
 <class="nav-item">
-  <!--  <class="nav-item">
-    <button type="submit" class="btn btn-logout">Salir</button>
-    <button type="submit" class="btn-primary">Ingresar</button>
-  <button class="btn btn-comprar">Editar perfil</button> 
-  <a href="{% url 'home' %}" class="btn btn-logout">Cancelar</a>     -->
+ 
+ <strong><h1>{{ profile.user }}</h1></strong><br>
+
+ 
+  <a href="{% url 'home' %}" class="btn btn-logout">Cancelar</a>
    <a href="{% url 'edit_profile' %}" class="btn btn-logout">Editar perfil</a>
 </class>
 {% endblock %}
