@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
+from .models import Profile
+from django.contrib import messages
 
 @login_required
 def edit_profile(request):
@@ -16,6 +18,8 @@ def edit_profile(request):
     return render(request, "profile_edit.html", {"form": form})
 
 
+
 @login_required
 def profile_view(request):
     return render(request, "profile.html", {"profile": request.user.profile})
+

@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     # Apps propias
     "core",
     "productos",
-    "perfil",
+    "widget_tweaks",
+    'perfil.apps.PerfilConfig',
 ]
 
 SITE_ID = 1
