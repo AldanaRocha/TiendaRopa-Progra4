@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+   
+   <div>
+    <a href="create/" class="btn btn-primary">Nuevo Producto</a>
+   </div>
+
+ <div class="container mt-4">
+
+    <div class="row row-cols-md-5 row-cols-md-5 g-3">
+
+         {% for product in products %}
+            <div class="col">
+               
+                <div class="card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="Portada" width="80" class="card-img-top">
+                    {% else %}
+                        <div class="no-image"></div>
+                    {% endif %}
+                       <div class="body">
+                           <h5><strong>{{ product.title }}</strong> </h5>
+                         <h6>{{ product.description }}</h6>
+                         <h6>{{ product.marca }}</h6>
+                        {% if product.nuevo == 0 %}   <strong><p>USADO</p></strong> 
+                         {% else %}     <strong><p>NUEVO</p> </strong> {% endif %}
+                         <h6>${{ product.price }}</h6>
+                         <h6>Stock: {{ product.stock }}</h6>
+                         {% if product.stock == 0 %}    <p>NO DISPONIBLE</p>
+                         {% else %}     <p>DISPONIBLE</p>  {% endif %}
+
+                        </div>
+                </div>
+                <a href="{% url 'product-edit' product.id %}" class="btn  btn-success"> Editar</a>
+            
+                <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
+                   {% csrf_token %}
+                   <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
+                 </form>
+
+
+            </div>
+
+             {% endfor %}
+
+    </div>
+</div>
+
+</body>
+{% endblock %}
+
+
+</html>
+

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Nuevo producto{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+  <h2>Publicar producto</h2>
+  <form method="post" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+    
+    {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <div class="error">{{ field.errors }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary mt-3">Publicar</button>
+  </form>
+</div>
+
+{% endblock %}
+

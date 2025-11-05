@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% block title %}Inicio • Tienda de Ropa{% endblock %}
+{% block content %}
+<div class="home-container">
+  <h1 class="home-title">Bienvenido a la tienda de Ropa Nueva/Usada</h1>
+  {% if not user.is_authenticated %}
+    <p>Iniciá sesión para comprar, vender o intercambiar productos</p>
+    <div class="social-login">
+      <!-- Botón Google -->
+      <a href="{% provider_login_url 'google' %}" role="button" class="btn-social google">
+        <i class="fab fa-google"></i>
+      </a>
+      <!-- Botón GitHub -->
+      <a href="{% provider_login_url 'github' %}" role="button" class="btn-social github">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  {% else %}
+   
+   {% if user.is_authenticated %}
+    <p><a href="{% url 'product-create' %}" class="btn btn-success">➕ Publicar producto</a></p>
+   {% endif %}
+
+    <h2 class="section-title">Últimos productos</h2>
+    <div class="card-grid">
+      {% for product in products %}
+        <div class="card">
+            <div class="card-image">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-image">
+              {% else %}
+                <div class="no-image"></div>
+              {% endif %}
+            </div>
+          <h2>{{ product.title }}</h2>
+          <h4>{{ product.marca }}</h4>
+          <p><strong>${{ product.price }}</strong></p>
+          <a href="{% url 'product-list' %}" class="btn-primary">Ver más</a>
+        </div>
+      {% empty %}
+        <p>No hay productos publicados todavía.</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

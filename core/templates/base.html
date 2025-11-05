@@ -1,0 +1,132 @@
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Tienda De Ropa{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body class="bg-light">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{% url 'home' %}">Tienda de Ropa</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          {% if user.is_authenticated %}
+            <li class="nav-item me-3 text-white">
+              Hola, {{ user.first_name|default:user.username }}
+            </li>
+            <li class="nav-item me-3">
+              <a href="{% url 'profile' %}" class="nav-link">
+                {% if user.profile.avatar %}
+                  <img src="{{ user.profile.avatar.url }}" 
+                      alt="Avatar" 
+                      class="rounded-circle" 
+                      width="32" height="32"
+                      style="object-fit: cover;">
+                {% else %}
+                  <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" 
+                      alt="Avatar" 
+                      class="rounded-circle" 
+                      width="32" height="32">
+                {% endif %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'account_logout' %}" class="btn btn-logout">Salir</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a href="{% url 'account_login' %}" class="btn btn-logout">Entrar</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido -->
+  <main class="container my-4">
+    {% block content %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Limpiar contenido de allauth en páginas de account
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.location.pathname.startsWith('/accounts/')) {
+        const main = document.querySelector('main');
+        if (!main) return;
+        
+        // Esperar un momento para que se cargue todo el DOM
+        setTimeout(function() {
+          // Eliminar elementos que no sean parte del contenido personalizado
+          const unwantedSelectors = [
+            'main > h1:not(.custom-title):not(.logout-title)',
+            'main > h2:not(.custom-title):not(.logout-title)',
+            'main > h3:not(.custom-title)',
+            'main > ul:not(.navbar-nav):not(.custom-list)',
+            'main > ol:not(.custom-list)',
+            'main > p:not(.custom-content):not(.logout-text)',
+            'main > form:not(.custom-form):not(#logoutForm)',
+            'main > div:not(.custom-container):not(.logout-wrapper):not(.logout-container)',
+            'main > a:not(.custom-link):not(.btn-logout)',
+            '.messages:not(.custom-messages)'
+          ];
+          
+          unwantedSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+              // Verificar que no esté dentro de un contenedor personalizado
+              if (!el.closest('.custom-container') && 
+                  !el.closest('.logout-wrapper') && 
+                  !el.closest('.logout-container') &&
+                  !el.closest('.login-container')) {
+                el.remove();
+              }
+            });
+          });
+          
+          // Limpiar texto directo (nodos de texto huérfanos)
+          const textNodes = [];
+          const walker = document.createTreeWalker(
+            main,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+          );
+          
+          let node;
+          while (node = walker.nextNode()) {
+            const text = node.textContent.trim();
+            if (text.includes('Menu:') || 
+                text.includes('Menú:') || 
+                text.includes('Sign Out') ||
+                text.includes('Cerrar sesión') && 
+                !node.parentElement.classList.contains('custom-content')) {
+              textNodes.push(node);
+            }
+          }
+          
+          textNodes.forEach(node => {
+            if (!node.parentElement.closest('.custom-container') &&
+                !node.parentElement.closest('.logout-wrapper') &&
+                !node.parentElement.closest('.logout-container')) {
+              node.remove();
+            }
+          });
+        }, 100);
+      }
+    });
+  </script>
+</body>
+</html>
