@@ -3,7 +3,7 @@ import environ
 from django.contrib.messages import constants as messages
 
 env = environ.Env(DEBUG=(bool, True))
-environ.Env.read_env()  # lee .env si existe
+environ.Env.read_env() 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY", default="dev-secret-no-usar-en-prod")
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    
 
     # Terceros
     "allauth",
@@ -26,11 +27,13 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
+    'widget_tweaks', # <--- ¡COMA CORREGIDA!
 
     # Apps propias
     "core",
     "productos",
     "perfil",
+    
 ]
 
 SITE_ID = 1
@@ -56,7 +59,7 @@ ROOT_URLCONF = "TiendaRopa.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR /"templates"],
+        "DIRS": [BASE_DIR /"TiendaRopa" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,13 +86,15 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 # Configuración de django-allauth
-ACCOUNT_AUTHENTICATION_METHOD = "email"  # Login con email
+ACCOUNT_AUTHENTICATION_METHOD = "email" 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False  # No requiere username, solo email
-ACCOUNT_LOGOUT_ON_GET = False  # Requiere POST para logout (más seguro)
+ACCOUNT_USERNAME_REQUIRED = False 
+ACCOUNT_LOGOUT_ON_GET = False 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_SIGNUP_REDIRECT_URL = "home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter' 
+SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 
 # Configuración de mensajes de Bootstrap
 MESSAGE_TAGS = {
@@ -102,14 +107,14 @@ MESSAGE_TAGS = {
 
 # Archivos estáticos
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Para archivos estáticos en desarrollo
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Para producción
+STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR / "staticfiles" 
 
 # Archivos media
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Configuración de password validators (opcional pero recomendado)
+# Configuración de password validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",

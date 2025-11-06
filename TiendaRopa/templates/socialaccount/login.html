@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}{% trans "Iniciar Sesión" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4 mt-5">
+            <h1 class="card-title text-center mb-4">{% trans "Iniciar Sesión" %}</h1>
+
+            <p class="text-center">
+                {% trans "Si aún no ha creado una cuenta, por favor" %} 
+                <a href="{{ signup_url }}">{% trans "regístrese primero" %}</a>.
+            </p>
+
+            <form class="mb-4" method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="alert alert-danger mt-1">{{ field.errors }}</div>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="{% url 'account_reset_password' %}">{% trans "¿Ha olvidado su contraseña?" %}</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">{% trans "Iniciar Sesión" %}</button>
+            </form>
+
+            <hr>
+
+            <h2 class="h5 text-center mb-3">{% trans "O use una cuenta de terceros" %}</h2>
+            <div class="d-grid gap-2">
+                {% get_providers as socialaccount_providers %}
+                {% for provider in socialaccount_providers %}
+                    <a title="{{ provider.name }}" class="btn btn-outline-dark" 
+                       href="{% provider_login_url provider.id process="login" scope=provider.scope auth_params=provider.auth_params %}">
+                        <i class="fab fa-{{ provider.id|lower }} me-2"></i> 
+                        Iniciar con {{ provider.name }}
+                    </a>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+# Ignorar carpetas de Python y Django
+__pycache__/
+*.pyc
+
+# Ignorar base de datos local y archivos media
+db.sqlite3
+media/
+
+# Ignorar Entornos Virtuales
+venv/
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+
+# Ignorar archivos de migraciones (a menos que sean migraciones iniciales)
+*/migrations/0001_initial.py
+
+# Ignorar carpetas de estáticos de producción
+staticfiles/

@@ -12,7 +12,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),  # rutas de allauth
     path("", home, name="home"),
     path("productos/", include("productos.urls")),
-    path("profiles/" , include("perfil.urls")),
-    path("accounts/", include("allauth.urls")),  # login/signup
+    path('perfil/', include('perfil.urls')),
+    path("accounts/", include("allauth.urls")), # login/signup
+    path('productos/', include('productos.urls')),
 
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
