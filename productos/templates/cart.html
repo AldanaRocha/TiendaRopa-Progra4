@@ -1,0 +1,557 @@
+{% extends "base.html" %}
+{% block title %}Tu carrito{% endblock %}
+{% load static %}
+{% block content %}
+<style>
+    .cart-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .cart-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .cart-header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 700;
+    }
+
+    .cart-timer {
+        display: inline-block;
+        background: rgba(255,255,255,0.2);
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin-top: 10px;
+        font-size: 0.9em;
+        backdrop-filter: blur(10px);
+    }
+
+    .cart-table-wrapper {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .cart-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .cart-table th {
+        padding: 20px;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        letter-spacing: 1px;
+    }
+
+    .cart-table td {
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .cart-table tbody tr:hover {
+        background: #f8f9ff;
+        transform: scale(1.01);
+    }
+
+    .book-title {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1em;
+    }
+
+    .price {
+        color: #667eea;
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-input {
+        width: 60px;
+        padding: 8px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+    .quantity-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-update {
+        background: #4CAF50;
+        color: white;
+        font-size: 0.9em;
+    }
+
+    .btn-update:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76,175,80,0.3);
+    }
+
+    .btn-remove {
+        background: #ff4757;
+        color: white;
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    .btn-remove:hover {
+        background: #ee3344;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255,71,87,0.3);
+    }
+
+    .cart-summary {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+
+    .total-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .total-label {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .total-amount {
+        font-size: 2em;
+        font-weight: 800;
+        color: #667eea;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .btn-checkout {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 18px;
+        font-size: 1.1em;
+        grid-column: 1 / -1;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-checkout:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+    }
+
+    .btn-checkout:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-clear {
+        background: #f1f3f5;
+        color: #495057;
+    }
+
+    .btn-clear:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .btn-continue {
+        background: #20c997;
+        color: white;
+    }
+
+    .btn-continue:hover {
+        background: #1aa179;
+        transform: translateY(-2px);
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 80px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .empty-cart-icon {
+        font-size: 5em;
+        margin-bottom: 20px;
+        opacity: 0.3;
+    }
+
+    .empty-cart h2 {
+        color: #495057;
+        margin-bottom: 15px;
+    }
+
+    .empty-cart p {
+        color: #868e96;
+        margin-bottom: 30px;
+        font-size: 1.1em;
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-overlay.active {
+        display: flex;
+    }
+
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid rgba(255,255,255,0.3);
+        border-top: 5px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        animation: slideDown 0.5s ease;
+    }
+
+    .alert-warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        color: #856404;
+    }
+
+    .alert-info {
+        background: #d1ecf1;
+        border-left: 4px solid #17a2b8;
+        color: #0c5460;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cart-table {
+            font-size: 0.9em;
+        }
+        
+        .cart-table th,
+        .cart-table td {
+            padding: 10px;
+        }
+
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .cart-header h1 {
+            font-size: 1.8em;
+        }
+    }
+</style>
+
+<div class="cart-container">
+    <div class="cart-header">
+        <h1>🛒 Mi Carrito</h1>
+        <div class="cart-timer" id="cartTimer">
+            ⏱️ Tiempo restante: <span id="timeLeft">2:00:00</span>
+        </div>
+    </div>
+
+    <div id="expirationAlert" style="display: none;">
+        <div class="alert alert-warning">
+            ⚠️ Tu carrito expirará en <strong id="warningTime">10 minutos</strong>. Completa tu compra pronto.
+        </div>
+    </div>
+
+    {% if items %}
+        <div class="cart-table-wrapper">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th> Producto</th>
+                        <th>💰 Precio</th>
+                        <th>🔢 Cantidad</th>
+                        <th>💵 Subtotal</th>
+                        <th>⚙️ Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="book-title">{{ item.product.title}}</td>
+                        <td class="price">${{ item.product.price }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'update-cart' item.product.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <div class="quantity-control">
+                                    <input type="number" name="cantidad" value="{{ item.cantidad }}" 
+                                           min="1" max="99" class="quantity-input">
+                                    <button type="submit" class="btn btn-update">Actualizar</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td class="price">${{ item.subtotal }}</td>
+                        <td>
+                            <a href="{% url 'remove-from-cart' item.product.id %}" class="btn btn-remove">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="cart-summary">
+            <div class="total-section">
+                <span class="total-label">Total a pagar:</span>
+                <span class="total-amount">${{ total }}</span>
+            </div>
+            
+            <div class="action-buttons">
+                <button onclick="procesarPago()" class="btn btn-checkout">
+                    🔒 Proceder al Pago
+                </button>
+                <a href="{% url 'clear-cart' %}" class="btn btn-clear" onclick="return confirm('¿Estás seguro de vaciar el carrito?')">
+                    🗑️ Vaciar Carrito
+                </a>
+                <a href="/productos" class="btn btn-continue">
+                    ← Seguir Comprando
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>Tu carrito está vacío</h2>
+            <p>¡Descubre nuestros productos y comienza a llenar tu carrito!</p>
+            <a href="/productos" class="btn btn-checkout" style="display: inline-block;">
+                🔍 Explorar productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+</div>
+
+<script>
+// Configuración del temporizador (2 horas = 7200 segundos)
+const CART_EXPIRATION_TIME = 7200;
+const WARNING_TIME = 600; // Advertencia a 10 minutos
+
+// Inicializar el temporizador
+function initCartTimer() {
+    let expirationTime = localStorage.getItem('cartExpirationTime');
+    
+    if (!expirationTime) {
+        expirationTime = Date.now() + (CART_EXPIRATION_TIME * 1000);
+        localStorage.setItem('cartExpirationTime', expirationTime);
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    const expirationTime = parseInt(localStorage.getItem('cartExpirationTime'));
+    const now = Date.now();
+    const timeLeft = Math.max(0, Math.floor((expirationTime - now) / 1000));
+    
+    if (timeLeft === 0) {
+        clearCart();
+        return;
+    }
+    
+    // Mostrar advertencia si quedan menos de 10 minutos
+    if (timeLeft <= WARNING_TIME) {
+        const warningDiv = document.getElementById('expirationAlert');
+        if (warningDiv) {
+            warningDiv.style.display = 'block';
+            document.getElementById('warningTime').textContent = formatTime(timeLeft);
+        }
+    }
+    
+    // Actualizar el display del temporizador
+    const timerDisplay = document.getElementById('timeLeft');
+    if (timerDisplay) {
+        timerDisplay.textContent = formatTime(timeLeft);
+    }
+}
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function clearCart() {
+    // Limpiar el almacenamiento local
+    localStorage.removeItem('cartExpirationTime');
+    
+    // Redirigir a la URL de limpiar carrito
+    window.location.href = "{% url 'clear-cart' %}";
+}
+
+function procesarPago() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.add('active');
+    
+    console.log("Iniciando proceso de pago...");
+    
+    fetch("{% url 'create-preference-cart' %}")
+        .then(response => {
+            console.log("Response status:", response.status);
+            
+            return response.text().then(text => {
+                console.log("Response completa:", text);
+                
+                if (!response.ok) {
+                    loadingOverlay.classList.remove('active');
+                    alert(`Error del servidor (${response.status}): ${text}`);
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    loadingOverlay.classList.remove('active');
+                    console.error("No es JSON válido:", text);
+                    throw new Error(`Respuesta no es JSON: ${text}`);
+                }
+            });
+        })
+        .then(data => {
+            console.log("Datos recibidos:", data);
+            if (data.init_point) {
+                console.log("Redirigiendo a:", data.init_point);
+                // Limpiar el temporizador al completar la compra
+                localStorage.removeItem('cartExpirationTime');
+                window.location.href = data.init_point;
+            } else if (data.error) {
+                loadingOverlay.classList.remove('active');
+                alert("Error: " + data.error);
+            } else {
+                loadingOverlay.classList.remove('active');
+                alert("Error al procesar el pago");
+            }
+        })
+        .catch(error => {
+            loadingOverlay.classList.remove('active');
+            console.error("Error completo:", error);
+        });
+}
+
+// Resetear el temporizador cuando se actualiza el carrito
+function resetTimer() {
+    const expirationTime = Date.now() + (CART_EXPIRATION_TIME * 1000);
+    localStorage.setItem('cartExpirationTime', expirationTime);
+    
+    // Ocultar advertencia si estaba visible
+    const warningDiv = document.getElementById('expirationAlert');
+    if (warningDiv) {
+        warningDiv.style.display = 'none';
+    }
+}
+
+// Interceptar el formulario de actualización para resetear el timer
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar el temporizador solo si hay items en el carrito
+    // {% if items %}
+        initCartTimer();
+    // {% endif %}
+    
+    // Resetear timer al actualizar cantidades
+    const updateForms = document.querySelectorAll('form[action*="update-cart"]');
+    updateForms.forEach(form => {
+        form.addEventListener('submit', function() {
+            resetTimer();
+        });
+    });
+});
+
+console.log("URL de create-preference:", "{% url 'create-preference-cart' %}");
+</script>
+{% endblock %}

@@ -38,7 +38,10 @@
                 {% endif %}
               </a>
             </li>
-            <li class="nav-item">
+           <li class="btn text-white">
+                   <a href="{% url 'view-cart' %}" class="btn btn-logout">🛒 Mi Carrito</a>
+            </li>   
+            <li class="nav-item" >
               <a href="{% url 'account_logout' %}" class="btn btn-logout">Salir</a>
             </li>
           {% else %}

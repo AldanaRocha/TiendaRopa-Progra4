@@ -2,6 +2,7 @@
 from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
+from decouple import config
 
 # Inicializar environ y cargar .env
 env = environ.Env(
@@ -17,9 +18,10 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = ["*"]
 
-# Usando environ para todas las variables de entorno
-MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN', default='')
-MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY', default='')
+
+
+MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
+MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
 
 
 INSTALLED_APPS = [

@@ -14,4 +14,14 @@ urlpatterns = [
     path('pago/fallido/', views.pago_fallido, name='pago_fallido'),
     path('pago/pendiente/', views.pago_pendiente, name='pago_pendiente'),
 
+    path("pago/<int:product_id>/", views.create_preference_cart, name="crear-preferencia"),
+ 
+    # Carrito
+    path('add/<int:product_id>/', views.add_to_cart, name='add-to-cart'),
+    path('cart/', views.view_cart, name='view-cart'),
+    path('remove/<int:product_id>/', views.remove_from_cart, name='remove-from-cart'),
+    path('update/<int:product_id>/', views.update_cart_quantity, name='update-cart'),
+    path('clear/', views.clear_cart, name='clear-cart'),
+    path('create-preference/', views.create_preference_cart, name='create-preference-cart'),
 ]
+
