@@ -5,4 +5,4 @@ from .models import Profile
 class ProfileAdmin (admin.ModelAdmin):
     list_display=('user','bio','website')
     search_fields=('user_username','user_email')
-# Register your models here.
+

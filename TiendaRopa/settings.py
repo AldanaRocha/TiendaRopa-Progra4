@@ -1,39 +1,53 @@
+
 from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
 
-env = environ.Env(DEBUG=(bool, True))
+# Inicializar environ y cargar .env
+env = environ.Env(
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, "dev-secret-no-usar-en-prod")
+)
 environ.Env.read_env() 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = env("SECRET_KEY", default="dev-secret-no-usar-en-prod")
-DEBUG = env("DEBUG", default=True)
+
+# --- CONFIGURACIÓN PRINCIPAL ---
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env("DEBUG")
 ALLOWED_HOSTS = ["*"]
 
+# Usando environ para todas las variables de entorno
+MERCADOPAGO_ACCESS_TOKEN = env('MERCADOPAGO_ACCESS_TOKEN', default='')
+MERCADOPAGO_PUBLIC_KEY = env('MERCADOPAGO_PUBLIC_KEY', default='')
+
+
 INSTALLED_APPS = [
-    # Django
+    # Django Base
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
+    "django.contrib.sites", # Necesaria para allauth
+    'django.contrib.humanize', # Útil para formatos de números
     
-
-    # Terceros
+    # Terceros (Identidad y UI)
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
-    'widget_tweaks', # <--- ¡COMA CORREGIDA!
+    'widget_tweaks', 
+    
+    # Terceros (Pagos)
+    "mercadopago",
 
-    # Apps propias
+    # Apps Propias del Proyecto
     "core",
     "productos",
     "perfil",
-    
 ]
 
 SITE_ID = 1
@@ -59,7 +73,8 @@ ROOT_URLCONF = "TiendaRopa.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR /"TiendaRopa" / "templates"],
+        # Ruta corregida/simplificada para templates a nivel de proyecto
+        "DIRS": [BASE_DIR / "templates"], 
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -81,11 +96,10 @@ DATABASES = {
     }
 }
 
-# Configuración de autenticación y redirecciones
+# --- AUTENTICACIÓN Y ALLAUTH ---
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-# Configuración de django-allauth
 ACCOUNT_AUTHENTICATION_METHOD = "email" 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False 
@@ -96,7 +110,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter' 
 SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 
-# Configuración de mensajes de Bootstrap
+# --- MENSAJES DE BOOTSTRAP ---
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
@@ -105,16 +119,15 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-# Archivos estáticos
+# --- ARCHIVOS ESTÁTICOS Y MEDIA ---
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"] 
 STATIC_ROOT = BASE_DIR / "staticfiles" 
 
-# Archivos media
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Configuración de password validators
+# --- VALIDACIÓN DE PASSWORD ---
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -133,11 +146,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internacionalización
+# --- INTERNACIONALIZACIÓN ---
 LANGUAGE_CODE = "es-ar"
 TIME_ZONE = "America/Argentina/Buenos_Aires"
 USE_I18N = True
 USE_TZ = True
 
-# Default primary key field type
+# --- CONFIGURACIÓN DE MODELOS ---
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
