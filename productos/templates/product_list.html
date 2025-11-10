@@ -41,31 +41,20 @@
 
                         </div>
                 </div>
-                <a href="{% url 'product-edit' product.id %}" class="btn  btn-success"> Editar</a>
+                <a href="{% url 'product-edit' product.id %}" class="btn  btn-success m-3"> Editar</a>
             
                 <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
                    {% csrf_token %}
-                   <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
-                  <div>
-                      <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago </a>
+                   <button type="submit" class="btn btn-danger m-3" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
 
-                       <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary">🛒 Agregar al carrito</a>
-                  </div>
+                   <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago </a>
+                    <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary m-2">🛒 Agregar al carrito</a>
 
                  </form>
 
 
             </div>
 
-
-    <script>
-      function pagar(productId){
-       fetch(`/pago/${productId}/`)
-       .then(res => res.json())
-       .then(data => {
-          window.location.href = data.init_point; // Redirige al Checkout Pro
-      });}
-    </script>
              {% endfor %}
 
     </div>

@@ -67,7 +67,9 @@
   <div class="checkout-card text-center">
     <h2>{{ product.title }}</h2>
     <div class="product-info">
+      {% if product.marca %}
       <p><strong>Marca:</strong> {{ product.marca }}</p>
+      {% endif %}
 
       {% if product.image %}
         <img src="{{ product.image.url }}" alt="{{ product.title }}">
