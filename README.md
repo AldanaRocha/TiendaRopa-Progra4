@@ -2,7 +2,7 @@
 
 Tienda online de ropa nueva y usada con sistema de pagos integrado mediante Mercado Pago.
 
-![Portada](./media/tienda_portada.png)
+![Portada](./media/screenshots/tienda_portada.png)
 
 ## 📋 Descripción
 
