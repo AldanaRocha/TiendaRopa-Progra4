@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}{% translate "Iniciar sesión" %}{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-6 col-md-8">
+        <div class="card shadow-sm p-4">
+
+            <h1 class="card-title text-center mb-4">{% translate "Iniciar sesión" %}</h1>
+
+            {% include "account/snippets/social_login.html" with extra_context="social_login" %}
+
+            <p class="text-center my-3">
+                {% blocktrans %}Si aún no ha creado una cuenta, por favor <a href="{{ signup_url }}">regístrese</a> primero.{% endblocktrans %}
+            </p>
+
+            <form class="login" method="POST" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                
+                {{ form.as_p }}
+                
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">{% translate "Iniciar sesión" %}</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

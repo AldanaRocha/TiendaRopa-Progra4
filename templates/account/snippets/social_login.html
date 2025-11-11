@@ -1,0 +1,10 @@
+{% load socialaccount %}
+
+{% if socialaccounts %}
+<div class="socialaccount_ballot">
+    <h5>O usa una cuenta de terceros</h5>
+    <ul class="socialaccount_providers list-unstyled">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+    </ul>
+</div>
+{% endif %}
