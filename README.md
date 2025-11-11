@@ -12,7 +12,6 @@ Plataforma web desarrollada en Django que permite a los usuarios publicar, compr
 
 - 👕 **Publicar productos**: Los usuarios pueden listar ropa nueva o usada para vender
 - 💳 **Sistema de pagos**: Integración completa con Mercado Pago
-- 🔍 **Búsqueda y filtros**: Encuentra fácilmente la prenda que buscas
 - 👤 **Perfiles de usuario**: Gestiona tus publicaciones y compras
 
 ## 🛠️ Tecnologías Utilizadas
