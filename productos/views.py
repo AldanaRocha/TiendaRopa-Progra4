@@ -10,6 +10,22 @@ from django.conf import settings
 @login_required
 def product_list(request):
     products = Product.objects.filter(active=True).order_by("-created_at")
+    
+    # Filtro por nombre del producto
+    search = request.GET.get('search')
+    if search:
+        products = products.filter(title__icontains=search)
+    
+    # Filtro por marca
+    marca = request.GET.get('marca')
+    if marca:
+        products = products.filter(marca__icontains=marca)
+    
+    # Filtro por nuevo/usado
+    nuevo = request.GET.get('nuevo')
+    if nuevo != '' and nuevo is not None:
+        products = products.filter(nuevo=int(nuevo))
+    
     return render(request, "product_list.html", {"products": products})
 
 
@@ -38,6 +54,7 @@ def product_edit(request, pk):
     else:
         form = ProductForm(instance=product)
     return render(request, "product_form.html", {"form": form})
+
 
 def product_delete(request, pk):
     products = get_object_or_404(Product, pk=pk)
@@ -185,6 +202,7 @@ def create_preference_cart(request):
             "error": str(e),
         }, status=500)
 
+
 def remove_from_cart(request, product_id):
     carrito = request.session.get('carrito', {})
     product_id_str = str(product_id)
@@ -289,8 +307,10 @@ def pago_exitoso(request):
         'status': status,
     })
 
+
 def pago_fallido(request):
     return render(request, 'market/pago_fallido.html')
+
 
 def pago_pendiente(request):
     return render(request, 'pago_pendiente.html')

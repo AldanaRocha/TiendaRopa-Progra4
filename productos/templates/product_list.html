@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,54 +14,97 @@
     <a href="create/" class="btn btn-primary">Nuevo Producto</a>
    </div>
 
- <div class="container mt-4">
-
-    <div class="row row-cols-md-5 row-cols-md-5 g-3">
-
-         {% for product in products %}
-            <div class="col">
-               
-                <div class="card">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="Portada" width="80" class="card-img-top">
-                    {% else %}
-                        <div class="no-image"></div>
-                    {% endif %}
-                       <div class="body">
-                           <h5><strong>{{ product.title }}</strong> </h5>
-                         <h6>{{ product.description }}</h6>
-                         <h6>{{ product.marca }}</h6>
-                        {% if product.nuevo == 0 %}   <strong><p>USADO</p></strong> 
-                         {% else %}     <strong><p>NUEVO</p> </strong> {% endif %}
-                         <h6>${{ product.price }}</h6>
-                         <h6>Stock: {{ product.stock }}</h6>
-                         {% if product.stock == 0 %}    <p>NO DISPONIBLE</p>
-                         {% else %}     <p>DISPONIBLE</p>  {% endif %}
-
-                        </div>
+   <!-- Filtros de Búsqueda -->
+   <div class="container mt-4">
+       <div class="card mb-4">
+           <div class="card-body">
+               <h5 class="card-title">Filtros de Búsqueda</h5>
+               <form method="get" action="">
+                   <div class="row g-3">
+                       <!-- Filtro por nombre -->
+                       <div class="col-md-4">
+                           <label for="search" class="form-label">Nombre del Producto</label>
+                           <input type="text" class="form-control" id="search" name="search" 
+                                  placeholder="Buscar por nombre..." value="{{ request.GET.search }}">
+                       </div>
+                       
+                       <!-- Filtro por marca -->
+                       <div class="col-md-4">
+                           <label for="marca" class="form-label">Marca</label>
+                           <input type="text" class="form-control" id="marca" name="marca" 
+                                  placeholder="Buscar por marca..." value="{{ request.GET.marca }}">
+                       </div>
+                       
+                       <!-- Filtro nuevo/usado -->
+                       <div class="col-md-4">
+                           <label for="nuevo" class="form-label">Condición</label>
+                           <select class="form-select" id="nuevo" name="nuevo">
+                               <option value="">Todos</option>
+                               <option value="1" {% if request.GET.nuevo == "1" %}selected{% endif %}>Nuevo</option>
+                               <option value="0" {% if request.GET.nuevo == "0" %}selected{% endif %}>Usado</option>
+                           </select>
+                       </div>
+                   </div>
+                    
+                  <div class="row mt-3">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary me-2">🔍 Buscar</button>
+                        <a href="{% url 'product-list' %}" class="btn btn-secondary m-2">🔄 Limpiar Filtros</a>
+                    </div>
                 </div>
-                <a href="{% url 'product-edit' product.id %}" class="btn  btn-success m-3"> Editar</a>
-            
-                <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
-                   {% csrf_token %}
-                   <button type="submit" class="btn btn-danger m-3" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
 
-                   <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago </a>
-                    <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary m-2">🛒 Agregar al carrito</a>
+                    
+                   
 
-                 </form>
+               </form>
+           </div>
+       </div>
+   </div>
 
-
-            </div>
-
-             {% endfor %}
-
-    </div>
-</div>
+   <div class="container mt-4">
+       <div class="row row-cols-md-5 row-cols-md-5 g-3">
+           {% for product in products %}
+               <div class="col">
+                   <div class="card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="Portada" class="card-img-top product-image">
+                        {% else %}
+                            <div class="no-image product-image bg-light d-flex align-items-center justify-content-center">
+                                <span class="text-muted">Sin imagen</span>
+                            </div>
+                        {% endif %}
+                       <div class="body">
+                           <h5><strong>{{ product.title }}</strong></h5>
+                           <h6>{{ product.description }}</h6>
+                           <h6>{{ product.marca }}</h6>
+                           {% if product.nuevo == 0 %}
+                               <strong><p>USADO</p></strong>
+                           {% else %}
+                               <strong><p>NUEVO</p></strong>
+                           {% endif %}
+                           <h6>${{ product.price }}</h6>
+                           <h6>Stock: {{ product.stock }}</h6>
+                           {% if product.stock == 0 %}
+                               <p>NO DISPONIBLE</p>
+                           {% else %}
+                               <p>DISPONIBLE</p>
+                           {% endif %}
+                       </div>
+                   </div>
+                   <a href="{% url 'product-edit' product.id %}" class="btn btn-success m-3">Editar</a>
+                   
+                   <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
+                       {% csrf_token %}
+                       <button type="submit" class="btn btn-danger m-3" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
+                       <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago</a>
+                       <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary m-2">🛒 Agregar al carrito</a>
+                   </form>
+               </div>
+           {% endfor %}
+       </div>
+   </div>
 
 </body>
 {% endblock %}
 
-
 </html>
-
