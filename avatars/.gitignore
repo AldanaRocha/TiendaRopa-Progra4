@@ -17,3 +17,14 @@ venv/
 
 # Ignorar carpetas de estáticos de producción
 staticfiles/
+
+# Ignora los cambios locales en el db.sqlite3
+git restore --staged db.sqlite3
+
+# Ignorar archivos de Django y Python
+__pycache__/
+*.pyc
+db.sqlite3
+*.sqlite3
+.env
+/venv/

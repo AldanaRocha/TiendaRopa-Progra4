@@ -13,7 +13,6 @@ urlpatterns = [
     path("", home, name="home"),
     path("productos/", include("productos.urls")),
     path('perfil/', include('perfil.urls')),
-    path("accounts/", include("allauth.urls")), # login/signup
-    path('productos/', include('productos.urls')),
 
+ 
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

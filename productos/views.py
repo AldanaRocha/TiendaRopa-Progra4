@@ -7,7 +7,6 @@ import mercadopago
 from django.conf import settings
 
 
-
 @login_required
 def product_list(request):
     products = Product.objects.filter(active=True).order_by("-created_at")
@@ -228,8 +227,10 @@ def clear_cart(request):
 def checkout(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
+    # Inicializa el SDK de Mercado Pago
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
+    # ------------------ DATOS DE LA PREFERENCIA ------------------
     preference_data = {
         "items": [
             {
@@ -247,14 +248,30 @@ def checkout(request, product_id):
         },
         # "auto_return": "approved",
     }
-
+    
+    # Crea la preferencia de pago
     preference_response = sdk.preference().create(preference_data)
     print("📦 Respuesta Mercado Pago:", preference_response)
 
+    # ------------------ MANEJO DE ERRORES FINAL ------------------
+    
+    # Capturar el caso donde el SDK falla o retorna un estado de error (ej: 403)
+    if 'response' not in preference_response or preference_response.get('status') in [403, 400]:
+        error_status = preference_response.get('status', 'N/A')
+        error_msg = (f"Error de Credenciales/Acceso (Status: {error_status}). "
+                     "Verifica que tu MERCADOPAGO_ACCESS_TOKEN en el archivo .env sea válido.")
+        print(error_msg)
+        return render(request, "error_pago.html", {"error": error_msg})
+        
     response = preference_response.get("response", {})
+    
+    # Verificar si la respuesta contiene el ID de preferencia
     if "id" not in response:
-        return render(request, "error_pago.html", {"error": response})
-
+        error_msg = f"Error al crear preferencia: {response.get('message', 'Error desconocido')}"
+        print(error_msg)
+        return render(request, "error_pago.html", {"error": error_msg})
+    # ------------------- FIN DE MANEJO DE ERRORES -------------------
+    
     return render(request, "checkout.html", {
         "product": product,
         "public_key": settings.MERCADOPAGO_PUBLIC_KEY,
