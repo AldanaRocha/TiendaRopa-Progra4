@@ -2,6 +2,8 @@ from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
 from decouple import config
+import os
+import dj_database_url
 
 # Inicializar environ y cargar .env
 env = environ.Env(
@@ -12,12 +14,14 @@ environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- CONFIGURACIÓN PRINCIPAL ---
+# CONFIGURACIÓN PRINCIPAL ojota 
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ["*"]
 
-
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
 MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
@@ -60,6 +64,7 @@ AUTHENTICATION_BACKENDS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -91,10 +96,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "TiendaRopa.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
 # --- AUTENTICACIÓN Y ALLAUTH ---
@@ -155,3 +159,18 @@ USE_TZ = True
 
 # --- CONFIGURACIÓN DE MODELOS ---
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Modificación 5: Seguridad en Producción
+if not DEBUG:
+    # 1. Fuerza el esquema HTTPS (Render)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    
+    # 2. Asegura las cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # 3. HSTS (Mejoras de seguridad)
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
