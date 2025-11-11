@@ -66,11 +66,13 @@
            {% for product in products %}
                <div class="col">
                    <div class="card">
-                       {% if product.image %}
-                           <img src="{{ product.image.url }}" alt="Portada" width="80" class="card-img-top">
-                       {% else %}
-                           <div class="no-image"></div>
-                       {% endif %}
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="Portada" class="card-img-top product-image">
+                        {% else %}
+                            <div class="no-image product-image bg-light d-flex align-items-center justify-content-center">
+                                <span class="text-muted">Sin imagen</span>
+                            </div>
+                        {% endif %}
                        <div class="body">
                            <h5><strong>{{ product.title }}</strong></h5>
                            <h6>{{ product.description }}</h6>
