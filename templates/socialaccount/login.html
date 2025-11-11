@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% translate "Social Network Login" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <h1 class="card-title text-center mb-4">{% translate "Confirmación de Conexión" %}</h1>
+
+                <p>{% blocktrans with provider_name=account.provider.name %}
+                    Se dispone a iniciar sesión usando una cuenta externa de {{ provider_name }}.
+                    {% endblocktrans %}</p>
+
+                <form method="post" action="{% url 'socialaccount_login_after_signup' %}">
+                    {% csrf_token %}
+                    
+                    <button class="btn btn-primary btn-lg mt-3" type="submit">{% translate "Continuar" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
