@@ -14,11 +14,12 @@
                     Se dispone a iniciar sesión usando una cuenta externa de {{ provider_name }}.
                     {% endblocktrans %}</p>
 
-                <form method="post" action="{% url 'socialaccount_login_after_signup' %}">
-                    {% csrf_token %}
-                    
-                    <button class="btn btn-primary btn-lg mt-3" type="submit">{% translate "Continuar" %}</button>
-                </form>
+             
+      <form method="post" action="{% url 'google_login' %}">
+    {% csrf_token %}
+    
+    <button class="btn btn-primary btn-lg mt-3" type="submit">{% translate "Continuar" %}</button>
+</form>
             </div>
         </div>
     </div>

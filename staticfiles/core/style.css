@@ -1,0 +1,223 @@
+.social-login {
+    display: flex;
+    justify-content: center;  /* centra horizontal */
+    gap: 100px;                /* espacio entre logos */
+    margin-top: 30px;
+}
+
+
+.social-login a {
+    text-decoration: none;
+}
+
+
+.social-logo {
+    width: 50px;   /* ajusta al tamaño que quieras */
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.social-logo:hover {
+    transform: scale(1.1); /* efecto al pasar el mouse */
+}
+
+
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 28px;
+  text-decoration: none;
+  color: rgb(24, 23, 23);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.btn-social.google {
+  background: #DB4437; /* Rojo Google */
+}
+
+
+.btn-social.github {
+  background: #764ba2; /* GitHub */
+}
+
+
+.btn-social:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.btn-logout:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.9em;
+    display: block;
+    margin-top: 5px;
+  }
+/* ESTOES PARA CADA TAJETA DEL PRODUCTO ---------------!*/
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    text-align: right;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* --------------- IMAGEN DEL PRODUCTO ---------------!*/
+.product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;  /* ← Esto muestra la imagen completa sin recortar */
+    background: #f5f5f5;  /* Fondo gris para rellenar el espacio */
+    border-radius: 50px;
+    margin: 0 auto 15px;  /* Centra la imagen */
+    display: block;
+    padding: 5px;
+}
+
+.card {
+    text-align: left;  /* Centra el contenido */
+}
+
+/*formulario input del login*/
+
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    transition: border 0.3s ease;
+}
+
+/* Botón de ingresar */
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background:  #1d2f7a ;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+/*     BOTON PARA COMPRAR/TRUEQUEAR     */
+.btn-comprar{
+    width: 100%;
+    padding: 1px;
+    font-size: 1em;
+    font-weight: bold;
+    background:  #1d2f7a ;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+main > h1:first-child,
+main > h2:first-child,
+main > h3:first-child,
+main > p:first-of-type,
+main > ul:first-of-type,
+main > form:first-of-type {
+  display: none !important;
+}
+
+/* Ocultar específicamente el menú de allauth */
+main > p:has(+ ul),
+main > ul li a[href*="email"],
+main > ul li a[href*="password"],
+main > ul li a[href*="connections"],
+main > ul li a[href*="logout"] {
+  display: none !important;
+}
+
+/* Ocultar cualquier lista que contenga estos textos */
+main ul:not(.navbar-nav):not(.custom-list):not(.logout-buttons) {
+  display: none !important;
+}
+
+/* Ocultar párrafos que contengan texto de allauth */
+main > p {
+  display: none !important;
+}
+
+/* Ocultar títulos h2 que no sean personalizados */
+main > h2:not(.logout-title):not(.login-header h2) {
+  display: none !important;
+}
+
+/* Ocultar formularios que no sean personalizados */
+main > form:not(#logoutForm):not(.custom-form) {
+  display: none !important;
+}
+
+/* MOSTRAR solo contenido personalizado */
+.custom-container,
+.custom-container *,
+.logout-wrapper,
+.logout-wrapper *,
+.logout-container,
+.logout-container *,
+.login-container,
+.login-container * {
+  display: block !important;
+}
+
+.logout-buttons,
+.logout-actions,
+.social-login {
+  display: flex !important;
+}
+
+/* Asegurar que el main sea visible */
+main.container {
+  display: block !important;
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Account Connections" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+            <h1 class="card-title text-center mb-4">{% translate "Conexiones de Cuenta" %}</h1>
+            
+            <p>{% translate "Aquí puedes ver las cuentas de redes sociales conectadas." %}</p>
+
+            <form method="post" action="{% url 'socialaccount_connections' %}">
+                {% csrf_token %}
+                
+                <p>
+                    {% translate "Tus cuentas sociales:" %}
+                    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                </p>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-secondary" type="submit">{% translate "Guardar Conexiones" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
