@@ -2,7 +2,7 @@ from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
 from decouple import config
-
+import os
 # Inicializar environ y cargar .env
 env = environ.Env(
     DEBUG=(bool, True),
@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- CONFIGURACIÓN PRINCIPAL ---
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ["*"]
 
 
@@ -60,6 +60,7 @@ AUTHENTICATION_BACKENDS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -121,9 +122,9 @@ MESSAGE_TAGS = {
 }
 
 # --- ARCHIVOS ESTÁTICOS Y MEDIA ---
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"] 
-STATIC_ROOT = BASE_DIR / "staticfiles" 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
