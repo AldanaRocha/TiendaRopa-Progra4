@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product
 from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 import mercadopago
 from django.conf import settings
 
@@ -84,7 +84,7 @@ def view_cart(request):
                 'subtotal': subtotal
             })
             total += subtotal
-        except product.DoesNotExist:
+        except Product.DoesNotExist:
             pass
     
     context = {
@@ -120,12 +120,12 @@ def create_preference_cart(request):
                 
                 items.append({
                     "title": product.title,
-                    "marca": f": {product.marca}",  # Añadir descripción como en checkout
+                    "marca": f": {product.marca}", 
                     "quantity": cantidad,
                     "currency_id": "ARS",
                     "unit_price": float(product.price),
                 })
-            except product.DoesNotExist:
+            except Product.DoesNotExist:
                 print(f"Producto {product_id} no encontrado")
                 continue
         
@@ -142,8 +142,6 @@ def create_preference_cart(request):
                 "failure": "http://localhost:8000/lib/pago/fallido/",
                 "pending": "http://localhost:8000/lib/pago/pendiente/",
             },
-            # NO usar auto_return (dejarlo comentado como en checkout)
-            # "auto_return": "approved",
         }
         
         print("Creando preferencia...")
@@ -154,7 +152,7 @@ def create_preference_cart(request):
         
         response = preference_response.get("response", {})
         
-        # Verificar que tenga ID (como en checkout)
+        # Verificar que tenga ID
         if "id" not in response:
             print(f"❌ Error: no hay ID en response")
             return JsonResponse({
@@ -223,10 +221,9 @@ def clear_cart(request):
     return redirect('view-cart')
 
 
-
 def checkout(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-
+    
     # Inicializa el SDK de Mercado Pago
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
@@ -296,4 +293,4 @@ def pago_fallido(request):
     return render(request, 'market/pago_fallido.html')
 
 def pago_pendiente(request):
-        return render(request, 'pago_pendiente.html')
+    return render(request, 'pago_pendiente.html')
