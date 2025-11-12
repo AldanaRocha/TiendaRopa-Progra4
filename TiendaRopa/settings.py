@@ -16,12 +16,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # CONFIGURACIÓN PRINCIPAL ojota 
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
+DEBUG = env.bool("DEBUG",default=False)
 ALLOWED_HOSTS = ["*"]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('https://tiendaropa-progra4.onrender.com')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
 MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
@@ -140,7 +138,7 @@ MESSAGE_TAGS = {
 # --- ARCHIVOS ESTÁTICOS Y MEDIA ---
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"] 
-STATIC_ROOT = BASE_DIR, 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
