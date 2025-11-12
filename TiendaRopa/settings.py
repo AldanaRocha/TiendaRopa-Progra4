@@ -14,20 +14,12 @@ environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- CONFIGURACIÓN PRINCIPAL ---
+# CONFIGURACIÓN PRINCIPAL ojota 
 SECRET_KEY = env("SECRET_KEY")
-
-# 1. Configuración de DEBUG (Usamos os.environ para que funcione con Render/local)
-DEBUG = os.environ.get('DEBUG', 'True') == 'True' 
+DEBUG = env.bool("DEBUG",default=False)
 ALLOWED_HOSTS = ["*"]
 
-# Lógica de Render
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-# Lectura de la clave Gemini (Usamos os.environ para compatibilidad)
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 MERCADOPAGO_ACCESS_TOKEN = config('MERCADOPAGO_ACCESS_TOKEN')
 MERCADOPAGO_PUBLIC_KEY = config('MERCADOPAGO_PUBLIC_KEY')
@@ -59,7 +51,6 @@ INSTALLED_APPS = [
     "core",
     "productos",
     "perfil",
-    "chat_ai",
 ]
 
 SITE_ID = 1
@@ -69,10 +60,8 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-# --- MIDDLEWARE (Conflicto Resuelto: Combinación de Whitenoise) ---
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # Mantenemos Whitenoise
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -80,15 +69,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',  #render
 ]
-# NOTA: Tu compañero puso 'whitenoise.middleware.WhiteNoiseMiddleware' al final. 
-# Lo correcto es ponerlo después de SecurityMiddleware, como está aquí.
 
 ROOT_URLCONF = "TiendaRopa.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        # Ruta corregida/simplificada para templates a nivel de proyecto
         "DIRS": [BASE_DIR / "templates"], 
         "APP_DIRS": True,
         "OPTIONS": {
@@ -104,35 +93,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "TiendaRopa.wsgi.application"
 
-# --- CONFLICTO DE BASE DE DATOS RESUELTO ---
-if os.environ.get('DATABASE_URL'):
-    # Usar configuración de Render (PostgreSQL) si DATABASE_URL existe
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600 # Recomendado para producción
-        )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    # Usar configuración local (SQLite) si DATABASE_URL no existe
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
-# --- ARCHIVOS ESTÁTICOS RESUELTOS ---
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"] 
-STATIC_ROOT = BASE_DIR / "staticfiles" 
-# NOTA: Se eliminó el bloque 'STORAGES' duplicado de tu compañero, ya que Whitenoise
-# lo maneja automáticamente con esta configuración básica.
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
-# --- AUTENTICACIÓN Y SEGURIDAD (SIN CAMBIOS) ---
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL')
+#     )
+# }
+
+# --- AUTENTICACIÓN Y ALLAUTH ---
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
@@ -155,6 +131,23 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+# --- ARCHIVOS ESTÁTICOS Y MEDIA ---
+STATIC_URL = "/static/"
+#STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # --- VALIDACIÓN DE PASSWORD ---
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -175,20 +168,25 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # --- INTERNACIONALIZACIÓN ---
-LANGUAGE_CODE = "es-ar" # Mantenemos el español de Argentina
-TIME_ZONE = "America/Argentina/Buenos_Aires" # Ajusté la zona horaria a Argentina/Buenos_Aires
+LANGUAGE_CODE = "es-ar"
+TIME_ZONE = "America/Argentina/Buenos_Aires"
 USE_I18N = True
 USE_TZ = True
 
 # --- CONFIGURACIÓN DE MODELOS ---
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- Seguridad en Producción ---
+# Modificación 5: Seguridad en Producción
 if not DEBUG:
+    # 1. Fuerza el esquema HTTPS (Render)
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
+    
+    # 2. Asegura las cookies
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    
+    # 3. HSTS (Mejoras de seguridad)
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
