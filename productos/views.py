@@ -155,10 +155,13 @@ def create_preference_cart(request):
         preference_data = {
             "items": items,
             "back_urls": {
-                "success": "http://localhost:8000/lib/pago/exitoso/",
-                "failure": "http://localhost:8000/lib/pago/fallido/",
-                "pending": "http://localhost:8000/lib/pago/pendiente/",
+            "back_urls": {
+                "success": request.build_absolute_uri(reverse("pago_exitoso")),
+                "failure": request.build_absolute_uri(reverse("pago_fallido")),
+                "pending": request.build_absolute_uri(reverse("pago_pendiente")),
             },
+            "auto_return": "approved",
+
         }
         
         print("Creando preferencia...")
@@ -256,12 +259,12 @@ def checkout(request, product_id):
                 "unit_price": float(product.price),
             }
         ],
-        "back_urls": {
-            "success": "http://localhost:8000/pago/exitoso/",
-            "failure": "http://localhost:8000/pago/fallido/",
-            "pending": "http://localhost:8000/pago/pendiente/",
-        },
-        # "auto_return": "approved",
+            "back_urls": {
+                "success": request.build_absolute_uri(reverse("pago_exitoso")),
+                "failure": request.build_absolute_uri(reverse("pago_fallido")),
+                "pending": request.build_absolute_uri(reverse("pago_pendiente")),
+            },
+
     }
     
     # Crea la preferencia de pago
