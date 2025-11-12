@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Chat asistente de la IA</h2>
+
+    <div class="chat-box" style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
+        {% for turn in history %} 
+        <div class="chat-user" style="text-align: right; background-color: #d1ecf1; color: #0c5460; margin-bottom: 5px; padding: 8px; border-radius: 5px;">
+            <strong>Tú:</strong> {{ turn.user }} 
+        </div>
+        <div class="chat-ai" style="text-align: left; background-color: #e2e3e5; color: #383d41; margin-bottom: 10px; padding: 8px; border-radius: 5px;">
+            <strong>Asistente:</strong> {{ turn.ai }} 
+        </div>
+        {% endfor %}
+    </div>
+
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <button class="btn btn-primary" type="submit">Enviar</button> 
+    </form>
+</div>
+{% endblock %}

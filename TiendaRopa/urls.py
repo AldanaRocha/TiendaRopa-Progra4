@@ -13,6 +13,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("productos/", include("productos.urls")),
     path('perfil/', include('perfil.urls')),
+    path("ia/", include("chat_ai.urls", namespace="chat_ai"))
 
  
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
