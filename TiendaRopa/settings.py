@@ -3,6 +3,8 @@ import environ
 from django.contrib.messages import constants as messages
 from decouple import config
 import os
+import dj_database_url
+
 # Inicializar environ y cargar .env
 env = environ.Env(
     DEBUG=(bool, True),
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',  #render
 ]
 
 ROOT_URLCONF = "TiendaRopa.urls"
@@ -98,7 +101,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 # DATABASES = {
@@ -133,7 +140,7 @@ MESSAGE_TAGS = {
 # --- ARCHIVOS ESTÁTICOS Y MEDIA ---
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"] 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR, 'staticfiles'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
