@@ -137,7 +137,7 @@ def create_preference_cart(request):
                 
                 items.append({
                     "title": product.title,
-                    "marca": f": {product.marca}", 
+                    "description": f"Marca: {product.marca}",  # ← CORREGIDO: usar description
                     "quantity": cantidad,
                     "currency_id": "ARS",
                     "unit_price": float(product.price),
@@ -151,14 +151,15 @@ def create_preference_cart(request):
         
         print(f"Items: {items}")
         
-        # Crear preferencia IGUAL que en checkout
+        # IMPORTANTE: Actualizar URLs a tu dominio de Render
         preference_data = {
             "items": items,
             "back_urls": {
-                "success": "http://localhost:8000/lib/pago/exitoso/",
-                "failure": "http://localhost:8000/lib/pago/fallido/",
-                "pending": "http://localhost:8000/lib/pago/pendiente/",
+                "success": "https://tiendaropa-progra4.onrender.com/lib/pago/exitoso/",
+                "failure": "https://tiendaropa-progra4.onrender.com/lib/pago/fallido/",
+                "pending": "https://tiendaropa-progra4.onrender.com/lib/pago/pendiente/",
             },
+            "auto_return": "approved",
         }
         
         print("Creando preferencia...")
@@ -201,8 +202,8 @@ def create_preference_cart(request):
         return JsonResponse({
             "error": str(e),
         }, status=500)
-
-
+    
+    
 def remove_from_cart(request, product_id):
     carrito = request.session.get('carrito', {})
     product_id_str = str(product_id)
