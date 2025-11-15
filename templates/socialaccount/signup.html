@@ -1,35 +1,64 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load socialaccount %}
+{% load widget_tweaks %}
 
-{% block title %}{% translate "Sign Up" %}{% endblock %}
+{% block head_title %}{% trans "Registrarse" %}{% endblock %}
+{% block title %}{% trans "Registrarse" %}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card shadow-sm p-4">
-            
-            <h1 class="card-title text-center mb-4">{% translate "Registro con cuenta social" %}</h1>
+        <div class="card shadow-lg p-4 mt-5">
+            <h1 class="card-title text-center mb-4">{% trans "Crear Cuenta" %}</h1>
 
-            <p class="text-center">
-                {% blocktrans with provider_name=account.provider.name site_name=site.name %}
-                Estás a punto de crear una cuenta con **{{ provider_name }}** en **{{ site_name }}**.
-                {% endblocktrans %}
-            </p>
-            
-            <p>{% translate "Por favor, completa el siguiente formulario para finalizar el registro:" %}</p>
+            {% if socialaccount_providers %}
+            <h2 class="h5 text-center mb-3">{% trans "Registrarse con" %}</h2>
+            <div class="d-grid gap-2 mb-4">
+                {% get_providers as socialaccount_providers %}
+                {% for provider in socialaccount_providers %}
+                    <a title="{{ provider.name }}" class="btn btn-outline-dark" 
+                       href="{% provider_login_url provider.id process="signup" scope=provider.scope auth_params=provider.auth_params %}">
+                        <i class="fab fa-{{ provider.id|lower }} me-2"></i> 
+                        {{ provider.name }}
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="hr-text text-center mb-4">
+                <hr style="width: 50%; margin: 0 auto; margin-bottom: 10px;">
+                <span class="text-muted">{% trans "o" %}</span>
+                <hr style="width: 50%; margin: 0 auto; margin-top: 10px;">
+            </div>
+            {% endif %}
 
-            <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+            <form id="signup_form" method="post" action="{% url 'account_signup' %}">
                 {% csrf_token %}
                 
-                {{ form.as_p }}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        
+                        {{ field|add_class:"form-control" }} 
+                        
+                        {% if field.errors %}
+                            <div class="alert alert-danger mt-1">{{ field.errors }}</div>
+                        {% endif %}
+                        
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
                 
                 {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-
-                <div class="d-grid gap-2 mt-4">
-                    <button class="btn btn-primary btn-lg" type="submit">{% translate "Confirmar y Registrar" %}</button>
-                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 mb-3">{% trans "Registrarse" %}</button>
+                
+                <p class="text-center">
+                    {% trans "¿Ya tienes cuenta?" %} <a href="{{ login_url }}">{% trans "Inicia sesión" %}</a>
+                </p>
             </form>
         </div>
     </div>

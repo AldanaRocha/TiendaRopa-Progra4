@@ -258,9 +258,9 @@ def checkout(request, product_id):
             }
         ],
             "back_urls": {
-                "success": request.build_absolute_uri(reverse("pago_exitoso")),
-                "failure": request.build_absolute_uri(reverse("pago_fallido")),
-                "pending": request.build_absolute_uri(reverse("pago_pendiente")),
+                "success": "https://tiendaropa-progra4.onrender.com/lib/pago/exitoso/",
+                "failure": "https://tiendaropa-progra4.onrender.com/lib/pago/fallido/",
+                "pending": "https://tiendaropa-progra4.onrender.com/lib/pago/pendiente/",
             },
 
     }

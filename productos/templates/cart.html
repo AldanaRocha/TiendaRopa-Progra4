@@ -396,6 +396,10 @@
                 <a href="/productos" class="btn btn-continue">
                     ← Seguir Comprando
                 </a>
+                <form action="{% url 'generar-presupuesto' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">🧾 Enviar presupuesto</button>
+                </form>
             </div>
         </div>
     {% else %}
