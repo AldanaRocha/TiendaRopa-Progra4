@@ -1,7 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
+from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponse
@@ -41,9 +39,18 @@ def enviar_presupuesto_por_email(presupuesto, pdf_data):
 
 # --- Tu función de generación de PDF (sin cambios, asumiendo que funciona) ---
 def generar_presupuesto_pdf(presupuesto, items):
-    plantilla_path = settings.BASE_DIR / "core/static/pdf/plantilla_presupuesto.pdf"
+
+    plantilla_path = finders.find("pdf/plantilla_presupuesto.pdf")
+    
+    if not plantilla_path:
+        raise FileNotFoundError("No se encontró pdf/plantilla_presupuesto.pdf dentro de STATICFILES")
+
     pdf = fitz.open(plantilla_path)
     page = pdf[0]
+
+    # plantilla_path = settings.BASE_DIR / "core/static/pdf/plantilla_presupuesto.pdf"
+    # pdf = fitz.open(plantilla_path)
+    # page = pdf[0]
 
     # === INFO PRINCIPAL ===
     page.insert_text((80, 135), f" {presupuesto.id}", fontsize=15, color=(0,0,0))
