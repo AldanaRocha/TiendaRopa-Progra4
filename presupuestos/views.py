@@ -40,10 +40,10 @@ def enviar_presupuesto_por_email(presupuesto, pdf_data):
 # --- Tu función de generación de PDF (sin cambios, asumiendo que funciona) ---
 def generar_presupuesto_pdf(presupuesto, items):
 
-    plantilla_path = finders.find("pdf/plantilla_presupuesto.pdf")
+    plantilla_path = finders.find("pdf/Plantilla_presupuesto.pdf")
     
     if not plantilla_path:
-        raise FileNotFoundError("No se encontró pdf/plantilla_presupuesto.pdf dentro de STATICFILES")
+        raise FileNotFoundError("No se encontró pdf/Plantilla_presupuesto.pdf dentro de STATICFILES")
 
     pdf = fitz.open(plantilla_path)
     page = pdf[0]
