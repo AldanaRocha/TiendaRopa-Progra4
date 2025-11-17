@@ -21,34 +21,28 @@ class GeminiClient:
         self.client = genai.Client(api_key=api_key)
         
         # 3. Definir el modelo predeterminado 
-        self.default_model = "gemini-2.5-flash" 
+        self.default_model = "gemini-2.5-pro" 
 
     def generate_text(self, prompt, history: list = None, model=None, max_output_tokens=300):
         """
-        Genera contenido de texto usando Gemini. 
-        Ahora acepta 'history' para manejar el chat.
+        Genera contenido de texto para el CHAT usando una sesión con historial.
         """
         try:
             model_name = model if model else self.default_model
             
-            # ******************************************************
-            # *** CÓDIGO CORREGIDO: Usar el servicio de 'chats' ***
-            # ******************************************************
-            
-            # Configuración de generación
             generation_config = {
                 "max_output_tokens": max_output_tokens,
                 "temperature": 0.7,
             }
             
-            # 1. Crear la sesión de chat con el historial previo
+            # Crear la sesión de chat con el historial previo
             chat = self.client.chats.create(
                 model=model_name, 
                 history=history if history is not None else [],
                 config=generation_config
             )
             
-            # 2. Enviar el mensaje
+            # Enviar el mensaje
             response = chat.send_message(prompt)
             
             if response.text:
@@ -57,14 +51,43 @@ class GeminiClient:
                 return "Error: La respuesta de Gemini está vacía o bloqueada."
                 
         except Exception as e:
-            # Esto captura el error
-            logger.exception("Error al llamar a Gemini")
+            logger.exception("Error al llamar a Gemini en generate_text (CHAT)")
             return f"Lo siento, hubo un error al comunicarme con la IA. Mensaje técnico: {str(e)}"
+
+    def generate_simple_text(self, prompt: str, model=None, max_output_tokens=300) -> str:
+        """
+        Genera contenido de texto SIN historial (ideal para Price Suggest).
+        Utiliza el método models.generate_content para compatibilidad.
+        """
+        try:
+            model_name = "gemini-2.5-pro"
+            
+            generation_config = {
+                "max_output_tokens": max_output_tokens,
+                "temperature": 0.7,
+            }
+            
+            # 🚨 CORRECCIÓN: Usamos models.generate_content() para generación simple
+            response = self.client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=generation_config
+            )
+            
+            if response.text:
+                return response.text
+            else:
+                # Este error se activa por filtros de seguridad o prompt vacío
+                return "Error: La respuesta de Gemini está vacía o bloqueada (posiblemente por seguridad)."
+            
+        except Exception as e:
+            # Esto captura el error si generate_content falla
+            print(f"Error técnico en Sugerencia de Precio: {e}") 
+            return f"Error técnico: {str(e)}"
         
     def embed_text(self, text, model="models/text-embedding-004"):
         """Genera embeddings de texto usando el cliente inicializado."""
         try:
-            # Correcto: El SDK moderno usa genai.embed_content()
             result = self.client.embed_content( 
                 model=model,
                 content=text
@@ -74,7 +97,7 @@ class GeminiClient:
             logger.exception("Error al generar embedding en GeminiClient")
             raise e 
 
-# 🚨 OPCIONAL PERO RECOMENDADO: Inicializar la instancia que usará signals.py
+# --- INSTANCIA GLOBAL ---
 try:
     # Exporta una instancia global de la clase
     GEMINI_SERVICE_INSTANCE = GeminiClient() 

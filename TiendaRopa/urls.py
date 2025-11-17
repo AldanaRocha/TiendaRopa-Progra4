@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),  # rutas de allauth
     path("", home, name="home"),
-    path("productos/", include("productos.urls")),
+    path("productos/", include("productos.urls",  namespace="productos")),
     path('perfil/', include('perfil.urls')),
     path("ia/", include("chat_ai.urls", namespace="chat_ai")),
     path("presupuestos/", include("presupuestos.urls")),

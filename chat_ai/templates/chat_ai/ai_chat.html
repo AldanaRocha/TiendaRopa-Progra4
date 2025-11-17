@@ -1,24 +1,43 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="container mt-5">
-    <h2>Chat asistente de la IA</h2>
+{% block title %}Chat Asistente IA{% endblock %}
 
-    <div class="chat-box" style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">💬 Chat Asistente del Mercadito (IA)</h2>
+    
+    <div class="chat-box border rounded p-3 mb-4 bg-white shadow-sm" 
+         style="max-height: 60vh; overflow-y: auto;">
+        
         {% for turn in history %} 
-        <div class="chat-user" style="text-align: right; background-color: #d1ecf1; color: #0c5460; margin-bottom: 5px; padding: 8px; border-radius: 5px;">
-            <strong>Tú:</strong> {{ turn.user }} 
-        </div>
-        <div class="chat-ai" style="text-align: left; background-color: #e2e3e5; color: #383d41; margin-bottom: 10px; padding: 8px; border-radius: 5px;">
-            <strong>Asistente:</strong> {{ turn.ai }} 
-        </div>
+        
+            <div class="d-flex justify-content-end mb-3">
+                <div class="p-3 rounded bg-primary text-white" 
+                     style="max-width: 80%; border-bottom-right-radius: 0;">
+                    <strong>Tú:</strong> {{ turn.user }} 
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-start mb-3">
+                <div class="p-3 rounded bg-light border text-dark" 
+                     style="max-width: 80%; border-bottom-left-radius: 0;">
+                    <strong>Asistente:</strong> {{ turn.ai }} 
+                </div>
+            </div>
+
+        {% empty %}
+             <p class="text-center text-muted">Inicia tu conversación con el asistente de IA...</p>
         {% endfor %}
     </div>
 
-    <form method="post" class="mt-3">
+    <form method="post" class="mt-4 card p-4 shadow-sm">
         {% csrf_token %}
+        
         {{ form.as_p }} 
-        <button class="btn btn-primary" type="submit">Enviar</button> 
+        
+        <button class="btn btn-primary btn-lg mt-3" type="submit">
+            Enviar Mensaje
+        </button> 
     </form>
 </div>
 {% endblock %}

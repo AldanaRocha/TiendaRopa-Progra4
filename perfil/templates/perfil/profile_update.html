@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Editar Perfil y Avatar</h2>
+                </div>
+                <div class="card-body">
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-4 text-center">
+                            <h5 class="mb-3">Tu Avatar Actual</h5>
+                            <img src="{{ user.profile.avatar.url }}" 
+                                 alt="Avatar actual" 
+                                 class="rounded-circle border border-2 border-secondary" 
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+
+                        <fieldset class="form-group border p-3 mb-4">
+                            <legend class="border-bottom mb-4 px-2 fs-5">Datos de la Cuenta</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="{{ u_form.username.id_for_label }}">Nombre de Usuario</label>
+                                    {{ u_form.username }}
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group border p-3">
+                            <legend class="border-bottom mb-4 px-2 fs-5">Información de Perfil</legend>
+                            
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ p_form.display_name.id_for_label }}">Nombre a Mostrar (en la barra)</label>
+                                {{ p_form.display_name }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ p_form.bio.id_for_label }}">Biografía</label>
+                                {{ p_form.bio }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ p_form.website.id_for_label }}">Sitio Web</label>
+                                {{ p_form.website }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ p_form.avatar.id_for_label }}">Cambiar Avatar</label>
+                                {{ p_form.avatar }}
+                                <small class="form-text text-muted">Selecciona un archivo de imagen (PNG, JPG).</small>
+                            </div>
+                            
+                            {% comment %} Aquí se pueden incluir mensajes de error si lo deseas {% endcomment %}
+                        </fieldset>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-success btn-lg" type="submit">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

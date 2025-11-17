@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+app_name = "productos"
 
 urlpatterns = [
     # Productos
@@ -8,6 +9,7 @@ urlpatterns = [
     path("create/", views.product_create, name="product-create"),
     path("edit/<int:pk>/", views.product_edit, name="product-edit"),
     path("delete/<int:pk>/", views.product_delete, name="product-delete"),
+    path("<int:pk>/", views.product_detail, name="product-detail"),
  
     # Checkout individual
     path('checkout/<int:product_id>/', views.checkout, name='checkout'),

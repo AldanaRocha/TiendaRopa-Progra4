@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de {{ product.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        
+        {# Columna de Imagen (puedes ajustar esta sección según tu modelo) #}
+        <div class="col-md-5">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.title }}">
+            {% else %}
+                <div class="p-5 bg-light border text-center">Sin Imagen</div>
+            {% endif %}
+        </div>
+
+        {# Columna de Información del Producto #}
+        <div class="col-md-7">
+            <h1 class="display-4 fw-bold mb-3">{{ product.title }}</h1>
+            
+            <p class="lead text-success fs-2">${{ product.price }}</p>
+
+            <p class="text-muted">{{ product.description|linebreaksbr }}</p>
+
+            <ul class="list-unstyled mb-4">
+                <li><strong>Marca:</strong> {{ product.marca }}</li>
+                <li><strong>Stock Disponible:</strong> {{ product.stock }} unidades</li>
+            </ul>
+
+            {# Botón principal (ejemplo: Agregar al Carrito o Checkout) #}
+            <a href="{% url 'add-to-cart' product.pk %}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-cart-plus"></i> Agregar al Carrito
+            </a>
+
+            {# ========================================================= #}
+            {# 🚨 INTEGRACIÓN IA: Enlace al Recomendador de Productos 🚨 #}
+            {# ========================================================= #}
+            <div class="mt-4 p-3 bg-light rounded border">
+                <p class="mb-2">¿Buscas algo similar?</p>
+                <a href="{% url 'chat_ai:recommend-similar' product.pk %}" class="btn btn-info">
+                    ✨ Ver Recomendaciones Similares (IA)
+                </a>
+            </div>
+            {# ========================================================= #}
+            
+            {# Enlace para editar el producto (útil si eres el dueño) #}
+            {% if request.user.is_superuser %}
+                <a href="{% url 'product-edit' product.pk %}" class="btn btn-outline-secondary mt-3">Editar Producto</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <hr class="my-5">
+
+    {# Bloque donde se mostrarían las recomendaciones si se vuelve a esta página #}
+    <h3>Otros productos de tu interés</h3>
+    <p>Aquí podríamos mostrar directamente los productos recomendados por la IA.</p>
+</div>
+{% endblock %}

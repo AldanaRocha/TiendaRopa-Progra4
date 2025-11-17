@@ -49,7 +49,7 @@
                   <div class="row mt-3">
                     <div class="col-12 text-center">
                         <button type="submit" class="btn btn-primary me-2">🔍 Buscar</button>
-                        <a href="{% url 'product-list' %}" class="btn btn-secondary m-2">🔄 Limpiar Filtros</a>
+                       <a href="{% url 'productos:product-list' %}" class="btn btn-secondary m-2">🔄 Limpiar Filtros</a>
                     </div>
                 </div>
 
@@ -91,13 +91,13 @@
                            {% endif %}
                        </div>
                    </div>
-                   <a href="{% url 'product-edit' product.id %}" class="btn btn-success m-3">Editar</a>
+                   <a href="{% url 'productos:product-edit' product.id %}" class="btn btn-success m-3">Editar</a>
                    
-                   <form action="{% url 'product-delete' product.pk %}" method="post" style="display:inline;">
+                  <form action="{% url 'productos:product-delete' product.pk %}" method="post" style="display:inline;">
                        {% csrf_token %}
                        <button type="submit" class="btn btn-danger m-3" onclick="return confirm('¿Seguro que desea eliminar {{ product.title }}?')">Eliminar</button>
-                       <a href="{% url 'checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago</a>
-                       <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary m-2">🛒 Agregar al carrito</a>
+                       <a href="{% url 'productos:checkout' product.id %}" class="btn btn-warning btn-sm">💳 Comprar con Mercado Pago</a>
+                       <a href="{% url 'productos:add-to-cart' product.id %}" class="btn btn-primary m-2">🛒 Agregar al carrito</a>
                    </form>
                </div>
            {% endfor %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Sugerencia de Precio IA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4 text-center">💰 Sugerencia de Precio (IA) 💰</h2>
+        <p class="text-center text-muted">Utiliza Gemini para obtener un precio justo basado en el título, descripción y marca del producto que deseas vender.</p>
+        
+        <form method="post" class="card p-4 shadow-sm">
+            {% csrf_token %}
+            
+            {% comment %} 
+            Usamos widget_tweaks o forms.as_p. Si no usas widget_tweaks, usa form.as_p
+            Si usas widget_tweaks, puedes renderizar campo por campo con estilos Bootstrap
+            {% endcomment %}
+            
+            {{ form.as_p }}
+            
+            <button class="btn btn-primary btn-lg mt-3" type="submit">
+                Sugerir precio
+            </button>
+        </form>
+
+        {% if sugerencia %}
+        <div class="ai-result mt-4 p-4 border rounded bg-light">
+            <h3>Resultado de Gemini:</h3>
+            <pre class="alert alert-success mt-3 p-3">{{ sugerencia }}</pre>
+            <p class="text-muted small">Recuerda: esta es una sugerencia basada en el contexto que le diste a la IA. </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

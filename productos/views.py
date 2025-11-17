@@ -315,3 +315,8 @@ def pago_fallido(request):
 
 def pago_pendiente(request):
     return render(request, 'pago_pendiente.html')
+
+def product_detail(request, pk):
+    # Asegúrate de que tu modelo Product se llame así
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, "productos/product_detail.html", {"product": product})

@@ -1,22 +1,18 @@
 from pathlib import Path
-import environ
 from django.contrib.messages import constants as messages
 from decouple import config
 import os
 
 
-# Inicializar environ y cargar .env
-env = environ.Env(
-    DEBUG=(bool, True),
-    SECRET_KEY=(str, "dev-secret-no-usar-en-prod")
-)
-environ.Env.read_env() 
+
+TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN')
+TELEGRAM_DEFAULT_CHAT_ID = config('TELEGRAM_DEFAULT_CHAT_ID')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # CONFIGURACIÓN PRINCIPAL 
-SECRET_KEY = env("SECRET_KEY")
-#DEBUG = env.bool("DEBUG",default=False)
+SECRET_KEY = config("SECRET_KEY", default="dev-secret-no-usar-en-prod")
+
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]

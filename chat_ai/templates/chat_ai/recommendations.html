@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Recomendaciones Similares{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">
+        ✨ Productos similares a "{{ product.title }}"
+    </h2>
+    
+    <div class="alert alert-info" role="alert">
+        Producto base: **{{ product.title }}** (${{ product.price }})
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for p in recommended %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title h5">{{ p.title }}</h3>
+                    <p class="card-text text-muted">{{ p.description|truncatewords:12 }}</p>
+                    <p class="card-text fs-4 fw-bold text-success">${{ p.price }}</p>
+                    
+                    <a href="{% url 'product-detail' p.pk %}" class="btn btn-dark">Ver Producto</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <p class="alert alert-warning">No se encontraron recomendaciones similares para este producto. [cite: 307]</p>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
