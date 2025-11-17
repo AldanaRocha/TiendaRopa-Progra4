@@ -37,7 +37,7 @@ def product_create(request):
             product = form.save(commit=False)
             product.seller = request.user
             product.save()
-            return redirect("product-list")
+            return redirect("productos:product-list")
     else:
         form = ProductForm()
     return render(request, "product_form.html", {"form": form})
@@ -50,7 +50,7 @@ def product_edit(request, pk):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
-            return redirect("product-list")
+            return redirect("productos:product-list")
     else:
         form = ProductForm(instance=product)
     return render(request, "product_form.html", {"form": form})
@@ -59,7 +59,7 @@ def product_edit(request, pk):
 def product_delete(request, pk):
     products = get_object_or_404(Product, pk=pk)
     products.delete()
-    return redirect("product-list")
+    return redirect("productos:product-list")
 
 
 def add_to_cart(request, product_id):
@@ -81,7 +81,7 @@ def add_to_cart(request, product_id):
     request.session['carrito'] = carrito
     request.session.modified = True
     
-    return redirect("view-cart")
+    return redirect("productos:view_cart")
 
 
 def view_cart(request):
@@ -213,7 +213,7 @@ def remove_from_cart(request, product_id):
         request.session['carrito'] = carrito
         request.session.modified = True
     
-    return redirect('view-cart')
+    return redirect('productos:view_cart')
 
 
 def update_cart_quantity(request, product_id):
@@ -231,13 +231,13 @@ def update_cart_quantity(request, product_id):
         request.session['carrito'] = carrito
         request.session.modified = True
     
-    return redirect('view-cart')
+    return redirect('productos:view_cart')
 
 
 def clear_cart(request):
     if 'carrito' in request.session:
         del request.session['carrito']
-    return redirect('view-cart')
+    return redirect('productos:view_cart')
 
 
 def checkout(request, product_id):

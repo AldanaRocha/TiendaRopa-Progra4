@@ -361,7 +361,7 @@
                         <td class="book-title">{{ item.product.title}}</td>
                         <td class="price">${{ item.product.price }}</td>
                         <td>
-                            <form method="POST" action="{% url 'update-cart' item.product.id %}" style="display:inline;">
+                            <form method="POST" action="{% url 'productos:update-cart' item.product.id %}" style="display:inline;">
                                 {% csrf_token %}
                                 <div class="quantity-control">
                                     <input type="number" name="cantidad" value="{{ item.cantidad }}" 
@@ -372,7 +372,7 @@
                         </td>
                         <td class="price">${{ item.subtotal }}</td>
                         <td>
-                            <a href="{% url 'remove-from-cart' item.product.id %}" class="btn btn-remove">Eliminar</a>
+                            <a href="{% url 'productos:remove-from-cart' item.product.id %}" class="btn btn-remove">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -390,7 +390,7 @@
                 <button onclick="procesarPago()" class="btn btn-checkout">
                     🔒 Proceder al Pago
                 </button>
-                <a href="{% url 'clear-cart' %}" class="btn btn-clear" onclick="return confirm('¿Estás seguro de vaciar el carrito?')">
+                <a href="{% url 'productos:clear-cart' %}" class="btn btn-clear" onclick="return confirm('¿Estás seguro de vaciar el carrito?')">
                     🗑️ Vaciar Carrito
                 </a>
                 <a href="/productos" class="btn btn-continue">
@@ -475,7 +475,7 @@ function clearCart() {
     localStorage.removeItem('cartExpirationTime');
     
     // Redirigir a la URL de limpiar carrito
-    window.location.href = "{% url 'clear-cart' %}";
+    window.location.href = "{% url 'productos:clear-cart' %}";
 }
 
 function procesarPago() {
@@ -484,7 +484,7 @@ function procesarPago() {
     
     console.log("Iniciando proceso de pago...");
     
-    fetch("{% url 'create-preference-cart' %}")
+    fetch("{% url 'productos:create-preference-cart' %}")
         .then(response => {
             console.log("Response status:", response.status);
             
@@ -556,6 +556,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-console.log("URL de create-preference:", "{% url 'create-preference-cart' %}");
+console.log("URL de create-preference:", "{% url 'productos:create-preference-cart' %}");
 </script>
 {% endblock %}
