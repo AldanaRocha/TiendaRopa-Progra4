@@ -9,6 +9,9 @@ import fitz # PyMuPDF
 from .models import Presupuesto, PresupuestoItem
 from productos.models import Product
 from django.shortcuts import get_object_or_404 # Para manejo seguro de Product.objects.get
+import os
+from io import BytesIO
+from decimal import Decimal
 
 
 # --- Función auxiliar (debes tenerla definida si quieres usarla) ---
@@ -39,10 +42,11 @@ def enviar_presupuesto_por_email(presupuesto, pdf_data):
 
 # --- Tu función de generación de PDF (sin cambios, asumiendo que funciona) ---
 def generar_presupuesto_pdf(presupuesto, items):
+    plantilla_path = os.path.join(settings.BASE_DIR, "core/static/pdf/Plantilla_presupuesto.pdf")
 
-    plantilla_path = finders.find("pdf/Plantilla_presupuesto.pdf")
+    #plantilla_path = finders.find("pdf/Plantilla_presupuesto.pdf")
     
-    if not plantilla_path:
+    if not os.path.exists(plantilla_path):
         raise FileNotFoundError("No se encontró pdf/Plantilla_presupuesto.pdf dentro de STATICFILES")
 
     pdf = fitz.open(plantilla_path)
