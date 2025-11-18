@@ -8,7 +8,7 @@ import numpy as np
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from .utils import get_simple_ai_response_for_telegram, enviar_notificacion_telegram
+from .utils import enviar_notificacion_telegram
 
 # --- INSTANCIA GLOBAL DEL CLIENTE ---
 # Usar la instancia global si está definida en gemini_client.py
@@ -177,28 +177,37 @@ def recommend_similar(request, pk):
     return render(request, "chat_ai/recommendations.html", {"product": producto, "recommended": top})
 
 
-@csrf_exempt # Deshabilita la protección CSRF, ya que es una API externa
+@csrf_exempt
 def telegram_webhook(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body.decode("utf-8"))
             
-            # 1. Extraer mensaje y ID de chat
-            chat_id = data['message']['chat']['id']
+            # 1. Extraer ID del remitente, nombre y mensaje
+            chat_id_remitente = data['message']['chat']['id']
+            nombre_usuario = data['message']['from'].get('first_name', 'Usuario Desconocido')
             user_message = data['message']['text']
             
-            # 2. Obtener respuesta de la IA
-            ai_response = get_simple_ai_response_for_telegram(user_message)
+            # 2. Construir el mensaje de ALERTA para el ADMINISTRADOR
+            mensaje_alerta = (
+                f"🚨 NUEVA CONSULTA DE TELEGRAM 🚨\n\n"
+                f"De: {nombre_usuario} (ID: {chat_id_remitente})\n"
+                f"Mensaje: {user_message}\n\n"
+                f"👉 Para responder, abre el chat con el usuario en Telegram."
+            )
             
-            # 3. Enviar la respuesta de vuelta a Telegram
-            enviar_notificacion_telegram(ai_response, chat_id=chat_id)
+            # 3. Enviar la alerta a TI (Usando tu Chat ID como destino fijo)
+            # Reutiliza el ID de tu chat personal/grupo de administradores.
+            enviar_notificacion_telegram(mensaje_alerta) 
             
-            # Telegram espera una respuesta 200 OK
+            # 4. (Opcional) Enviar un mensaje de confirmación al usuario (para que sepa que fue recibido)
+            mensaje_confirmacion = "¡Hola! Hemos recibido tu consulta. Nuestro equipo te responderá pronto. ¡Gracias!"
+            enviar_notificacion_telegram(mensaje_confirmacion, chat_id=chat_id_remitente)
+            
             return JsonResponse({"status": "ok"})
 
         except Exception as e:
-            # Si hay un error, devolvemos 200 OK para que Telegram no reintente
-            print(f"Error procesando webhook de Telegram: {e}")
+            print(f"Error procesando webhook (Alerta fallida): {e}")
             return HttpResponse(status=200)
 
-    return HttpResponse(status=400) # Método no permitido
+    return HttpResponse(status=400)

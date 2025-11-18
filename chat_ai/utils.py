@@ -1,43 +1,21 @@
 # chat_ai/utils.py
+# Este archivo contiene la función de envío de notificaciones de Telegram.
 
 import requests
 from django.conf import settings
-from .gemini_client import GEMINI_SERVICE_INSTANCE as gemini_service
-
-def get_simple_ai_response_for_telegram(user_message: str) -> str:
-    """
-    Función de IA que añade un prompt de sistema simple para Telegram.
-    NOTA: No maneja historial de chat aquí, solo respuestas directas.
-    """
-    if not gemini_service:
-        return "Error: El servicio de IA no está activo."
-
-    system_prompt = (
-        "Sos un asistente amable de una tienda de ropa. Responde a preguntas sobre productos, "
-        "stock, o el marketplace. Mantén la respuesta breve y usa el español."
-    )
-    
-    # Construimos el prompt completo para la IA
-    full_prompt = f"{system_prompt}\n\nUsuario: {user_message}"
-    
-    try:
-        # Llamamos a la función de generación de texto simple (sin historial)
-        # Reutilizamos la lógica que creamos para el Sugeridor de Precios si es compatible,
-        # o usamos generate_text con un historial vacío.
-        return gemini_service.generate_simple_text(full_prompt) 
-        
-    except Exception as e:
-        print(f"Error en la lógica de IA para Telegram: {e}")
-        return "Lo siento, tengo problemas técnicos para responder."
-
-
+# from .gemini_client import GEMINI_SERVICE_INSTANCE as gemini_service (Comentado para eliminar dependencia de IA)
 
 def enviar_notificacion_telegram(mensaje, chat_id=None):
-    """Envía un mensaje de texto simple a Telegram."""
+    """
+    Envía un mensaje de texto simple a Telegram.
+    Si no se proporciona chat_id, utiliza el ID por defecto (el ID del administrador).
+    """
     
+    # Asegúrate de que el token y el ID por defecto estén cargados en settings.py
     token = settings.TELEGRAM_BOT_TOKEN
     chat_id = chat_id if chat_id else settings.TELEGRAM_DEFAULT_CHAT_ID
     
+    # URL de la API de Telegram para enviar mensajes
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     
     payload = {

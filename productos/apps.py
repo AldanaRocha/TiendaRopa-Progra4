@@ -1,11 +1,11 @@
-from django.apps import AppConfig
+# productos/apps.py
 
+from django.apps import AppConfig
 
 class ProductosConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'productos'
-
-
-def ready(self):
-        # 🚨 Importa el archivo de señales para que se cargue
+    
+    def ready(self):
+        # 🚨 ESTA LÍNEA ES LA QUE ACTIVA LAS SEÑALES 🚨
         import productos.signals

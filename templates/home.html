@@ -43,10 +43,10 @@
                     <div class="carousel-item {% if forloop.first %}active{% endif %}" style="min-height: 350px;"> 
                         
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" 
-                              class="d-block w-100" 
-                              style="max-height: 350px; object-fit: contain; background-color: #f8f9fa;" 
-                             alt="{{ product.title }}">
+                           <img src="{{ product.image.url }}" 
+                             class="d-block w-100" 
+                             style="max-height: 350px; object-fit: contain; background-color: #F0DCDC;" 
+                             alt="{{ product.title }}">
                         {% else %}
                             <div class="d-block w-100 bg-secondary text-white text-center d-flex align-items-center justify-content-center" style="height: 350px; border-radius: 12px 12px 0 0;">
                                 <h3>Producto Sin Imagen</h3>

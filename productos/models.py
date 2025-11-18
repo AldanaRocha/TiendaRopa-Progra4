@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from django.contrib.auth.models import User
 
 class Product(models.Model):
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="products")
@@ -14,6 +14,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=1)  # nuevo campo
     image = models.ImageField(upload_to="product_images/", blank=True, null=True)  # opcional
     updated_at = models.DateTimeField(auto_now=True)  # fecha de última modificación
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='productos_publicados')
 
     def __str__(self):
         return self.title

@@ -105,152 +105,30 @@ social-login {
 
 }
 
+/* core/style.css */
 
+/* ================================================= */
+/* GLOBAL Y UTILIDADES */
+/* ================================================= */
 
+/* Botones de cerrar sesión */
 .btn-logout {
-
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-
     color: white;
-
     padding: 10px 20px;
-
     border-radius: 25px;
-
     text-decoration: none;
-
     font-weight: bold;
-
     transition: transform 0.2s ease;
-
     display: inline-block;
-
 }
-
-
 
 .btn-logout:hover {
-
     transform: scale(1.05);
-
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-
 }
 
-
-
-.alert-error {
-
-    background: #f8d7da;
-
-    color: #721c24;
-
-    padding: 12px;
-
-    border-radius: 8px;
-
-    margin-bottom: 15px;
-
-    border: 1px solid #f5c6cb;
-
-}
-
-
-
-.error {
-
-    color: #dc3545;
-
-    font-size: 0.9em;
-
-    display: block;
-
-    margin-top: 5px;
-
-  }
-
-/* ESTOES PARA CADA TAJETA DEL PRODUCTO ---------------!*/
-
-
-
-.card-grid {
-
-    display: grid;
-
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 25px;
-
-    padding: 20px;
-
-    max-width: 1400px;
-
-    margin: 0 auto;
-
-}
-
-
-
-.card {
-
-    background: white;
-
-    border-radius: 15px;
-
-    padding: 20px;
-
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-
-    transition: transform 0.3s ease;
-
-    text-align: right;
-   
-
-/* 🚨 MODIFICADO: Asegura altura y alineación del contenido 🚨 */
-    height: 100%; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distribuye el espacio verticalmente */
-    text-align: left;
-
-}
-
-
-
-.card:hover {
-
-    transform: translateY(-10px);
-
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-
-}
-
-
-/* -------------------- IMAGEN DEL PRODUCTO --------------------!*/
-.product-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 50px;
-}
-
-/* Campos de la tarjeta */
-.card h2, .card h4 {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-/* formulario input del login */
-.form-group input {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1em;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    transition: border 0.3s ease;
-}
-
-/* Botón de ingresar */
+/* Botón principal */
 .btn-primary {
     width: 100%;
     padding: 15px;
@@ -264,7 +142,7 @@ social-login {
     transition: transform 0.2s ease;
 }
 
-/* BOTON PARA COMPRAR/TRUEQUEAR */
+/* Botón Comprar/Truequear */
 .btn-comprar {
     width: 100%;
     padding: 1px;
@@ -278,7 +156,187 @@ social-login {
     transition: transform 0.2s ease;
 }
 
-/* Estilos para ocultar allauth (Limpios y Mantenidos) */
+/* Errores */
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.9em;
+    display: block;
+    margin-top: 5px;
+}
+
+/* formulario input del login */
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    transition: border 0.3s ease;
+}
+
+
+/* ================================================= */
+/* LAYOUTS PRINCIPALES Y COMPONENTES */
+/* ================================================= */
+
+/* Barra de Navegación (Color Rosa #ffa8d9) */
+#main-navbar {
+    background-color: #ffa8d9 !important; 
+}
+
+/* Redes Sociales (Login) */
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    margin-top: 30px;
+}
+
+.social-login a {
+    text-decoration: none;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 28px;
+    text-decoration: none;
+    color: rgb(24, 23, 23);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-social.google {
+    background: #DB4437;
+}
+
+.btn-social.github {
+    background: #764ba2;
+}
+
+.btn-social:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ================================================= */
+/* ESTILOS DE PRODUCTOS Y TARJETAS */
+/* ================================================= */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    
+    /* 🚨 CLAVE: Para evitar superposición y asegurar altura uniforme 🚨 */
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    text-align: left;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Contenedor fijo para la imagen (Para que las tarjetas no se estiren) */
+.card-image {
+    height: 220px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    background: #f5f5f5; /* Fondo neutral para la imagen */
+    border-radius: 10px;
+    padding: 5px;
+}
+
+/* Imagen del Producto (Se ajusta al contenedor) */
+.product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 50px;
+}
+
+/* Contenedor de Botones (Fuerza la columna de botones al final de la tarjeta) */
+.card-actions {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column; 
+    gap: 8px;
+}
+
+/* Campos de la tarjeta */
+.card h2, .card h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+
+/* ================================================= */
+/* ESTILOS DE FOOTER (Color Rosa #ffa8d9) */
+/* ================================================= */
+
+.footer-custom {
+    background-color: #ffa8d9; 
+    color: #4a4a4a;
+    padding: 40px 0;
+    margin-top: 50px; 
+}
+
+.footer-link {
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #000000;
+}
+
+/* Íconos de Redes Sociales */
+.social-icons a i {
+    color: #4a4a4a; 
+    font-size: 1.5em; 
+    transition: color 0.2s;
+}
+
+.social-icons a:hover i {
+    color: #000000;
+}
+
+
+/* ================================================= */
+/* OCULTAMIENTO ALLAUTH (MANTENER LIMPIO) */
+/* ================================================= */
+
 main > h1:first-child,
 main > h2:first-child,
 main > h3:first-child,
@@ -330,53 +388,4 @@ main > form:not(#logoutForm):not(.custom-form) {
 
 main.container {
     display: block !important;
-}
-
-/* core/style.css (Añade estas reglas al final del archivo) */
-
-/* 🚨 Fija la altura del contenedor principal del carrusel 🚨 */
-#productCarousel .carousel-inner {
-    height: 350px; /* Misma altura que la que definiste en tu HTML */
-    max-height: 350px;
-    overflow: hidden; /* Esto es crucial para cortar el exceso */
-}
-
-/* Regla para la imagen dentro del carrusel */
-#productCarousel .carousel-item img {
-    /* Asegura que la imagen no exceda la altura fijada y ocupe todo el ancho */
-    height: 100%; 
-    width: auto; /* Permite que el ancho se ajuste a la proporción real */
-    object-fit: contain;
-    /* Elimina cualquier margen o padding que pudiera estar empujando la imagen */
-}
-
-/* core/style.css */
-
-.footer-custom {
-    /* Color de fondo: un rosa pálido similar al del ejemplo */
-    background-color: #F0DCDC; 
-    
-    /* Asegura que el texto y los enlaces sean legibles */
-    color: #4a4a4a; 
-    
-    padding: 40px 0; /* Espacio interno superior/inferior */
-    margin-top: 50px; /* Espacio sobre el footer */
-}
-
-.footer-link {
-    color: #4a4a4a;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.footer-link:hover {
-    color: #000000; /* Negro al pasar el ratón */
-}
-
-
-
-/* core/style.css (Añade esta regla. El ID es el más fuerte) */
-#main-navbar {
-    /* Color rosa pálido idéntico al footer */
-    background-color: #F0DCDC !important; 
 }

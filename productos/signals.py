@@ -1,23 +1,26 @@
-# productos/signals.py
+# productos/signals.py (Añadir un bloque try...except)
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Product 
-# 🚨 Ajusta esta importación a la ruta correcta de tu función de envío de Telegram
 from chat_ai.utils import enviar_notificacion_telegram 
+import logging # 🚨 Nuevo: para registrar el error
+logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=Product)
 def notificar_nuevo_producto(sender, instance, created, **kwargs):
-    """Envía una notificación de Telegram cuando se crea un nuevo producto."""
-    
-    if created: # Solo si el objeto Product fue creado
+    if created:
         mensaje = (
             f"✨ ¡Nuevo Producto Publicado! ✨\n\n"
             f"Título: {instance.title}\n"
             f"Marca: {instance.marca}\n"
             f"Precio: ${instance.price}\n"
-            f"Publicado por: {instance.user.username}" # Asumiendo que Product tiene un campo 'user'
+           # f"Publicado por: {instance.user.username}" 
         )
-        enviar_notificacion_telegram(mensaje)
-
-# NOTA: Debes asegurar que esta señal se registre en tu AppConfig.
+        try:
+            # 🚨 Intentamos enviar la notificación
+            enviar_notificacion_telegram(mensaje)
+            
+        except Exception as e:
+            # 🚨 Si falla, el error aparecerá en la terminal de Django (logs)
+            logger.error(f"Error al enviar notificación de Telegram: {e}")
