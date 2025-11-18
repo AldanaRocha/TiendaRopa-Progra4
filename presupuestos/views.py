@@ -55,13 +55,15 @@ def generar_presupuesto_pdf(presupuesto, items):
 
     # === TABLA DE ITEMS ===
     y = 395
+
     for item in items:
         nombre = (item.producto.title[:32] + "...") if len(item.producto.title) > 32 else item.producto.title
+        subtotal = item.precio_unitario * item.cantidad
         page.insert_text((70, y), nombre, fontsize=10, color=(0, 0, 0))
         page.insert_text((280, y), f"{item.cantidad}", fontsize=10, color=(0, 0, 0))
         page.insert_text((400, y), f"${item.precio_unitario:,.2f}", fontsize=10, color=(0, 0, 0))
-        page.insert_text((500, y), f"${item.subtotal:,.2f}", fontsize=10, color=(0, 0, 0))
-        y += 30  # Siguiente fila
+        page.insert_text((500, y), f"${subtotal:,.2f}", fontsize=10, color=(0, 0, 0))
+        y += 30
 
     # === TOTAL GENERAL ===
     y = 620
