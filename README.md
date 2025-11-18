@@ -1,9 +1,10 @@
 # 🛍️ Tienda de Ropa
 
 Tienda online de ropa nueva y usada con sistema de pagos integrado mediante Mercado Pago, chat con IA, y múltiples funcionalidades de comunicación y gestión.
+![Portada](./media/screenshots/1-PORTADA.png)
 
 <p align="center">
-  <img src="./media/screenshots/tienda_portada.png" alt="Portada" width="800"/>
+  <img src="./media/screenshots/1-PORTADA.png" alt="Portada" width="800"/>
 </p>
 ## 📋 Descripción
 
