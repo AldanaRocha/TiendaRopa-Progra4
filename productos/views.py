@@ -35,7 +35,7 @@ def product_create(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.user = request.user
+            product.seller = request.user
             product.save()
             return redirect("productos:product-list")
     else:
