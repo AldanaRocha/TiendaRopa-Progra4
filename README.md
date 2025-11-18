@@ -2,10 +2,8 @@
 
 Tienda online de ropa nueva y usada con sistema de pagos integrado mediante Mercado Pago, chat con IA, y múltiples funcionalidades de comunicación y gestión.
 
-![Portada](media/screenshots/1-PORTADA.png)
-
 <p align="center">
-  <img src="media/screenshots/1-PORTADA.png" alt="Portada" width="800"/>
+  <img src="media/screenshots/1-PORTADA.png" alt="Portada" width="700"/>
 </p>
 ## 📋 Descripción
 
@@ -96,28 +94,40 @@ python manage.py runserver
 
 ## 📸 Capturas de Pantalla
 
-### Pantalla Principal
-![Pantalla Principal](./media/screenshots/tienda_portada.png)
+### Pantalla de Inicio
+<p align="center">
+  <img src="media/screenshot/2-INICIO_SESION.png.png" alt="Portada" width="700"/>
+</p>
 
-### Detalle de Producto
-![Detalle](./media/screenshots/detalle_producto.png)
-
-### Carrito de Compras
-![Carrito](./media/screenshots/carrito.png)
-
-### Proceso de Compra
-![Compra Individual](./media/screenshots/checkout_1unidad.png)
-![Compra desde el carrito](./media/screenshots/checkout.png)
-
-### Filtros de Búsqueda
-![Filtros](./media/screenshots/filtros_busqueda.png)
+### Detalle del Perfil
+<p align="center">
+  <img src="media/screenshot/3-PERFIL.png" alt="Portada" width="700"/>
+</p>
 
 ### Chat con IA
-![Chat IA](./media/screenshots/chat_ia.png)
+<p align="center">
+  <img src="media/screenshot/4-CHAT_IA.png" alt="Portada" width="700"/>
+</p>
+
+### Filtros de Búsqueda
+<p align="center">
+  <img src="media/screenshot/5-FIROS.png" alt="Portada" width="700"/>
+</p>
+
+### Proceso de Compra
+<p align="center">
+  <img src="media/screenshot/6-CHECKOUT_INDIVIDUAL.png" alt="Portada" width="700"/>
+</p>
+
+### Carrito de Compras
+<p align="center">
+  <img src="media/screenshot/7-CARRITO.png" alt="Portada" width="700"/>
+</p>
 
 ### Presupuesto PDF
-![PDF](./media/screenshots/presupuesto_pdf.png)
-
+<p align="center">
+  <img src="media/screenshot/8-PRESUPUESTO.png" alt="Portada" width="700"/>
+</p>
 
 ## 🚀 Uso
 
