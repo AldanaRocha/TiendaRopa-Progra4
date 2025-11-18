@@ -96,39 +96,38 @@ python manage.py runserver
 
 ### Pantalla de Inicio
 <p align="center">
-  <img src="media/screenshot/2-INICIO_SESION.png.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/2-INICIO_SESION.png" alt="Portada" width="500"/>
 </p>
 
 ### Detalle del Perfil
 <p align="center">
-  <img src="media/screenshot/3-PERFIL.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/3-PERFIL.png" alt="Portada" width="650"/>
 </p>
 
 ### Chat con IA
 <p align="center">
-  <img src="media/screenshot/4-CHAT_IA.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/4-CHAT_IA.png" alt="Portada" width="600"/>
 </p>
 
 ### Filtros de Búsqueda
 <p align="center">
-  <img src="media/screenshot/5-FIROS.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/5-FILTROS.png" alt="Portada" width="600"/>
 </p>
 
 ### Proceso de Compra
 <p align="center">
-  <img src="media/screenshot/6-CHECKOUT_INDIVIDUAL.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/6-CHECKOUT_INDIVIDUAL.png" alt="Portada" width="300"/>
 </p>
 
 ### Carrito de Compras
 <p align="center">
-  <img src="media/screenshot/7-CARRITO.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/7-CARRITO.png" alt="Portada" width="700"/>
 </p>
 
 ### Presupuesto PDF
 <p align="center">
-  <img src="media/screenshot/8-PRESUPUESTO.png" alt="Portada" width="700"/>
+  <img src="media/screenshots/8-PRESUPUESTO.png" alt="Portada" width="300"/>
 </p>
-
 ## 🚀 Uso
 
 ### Para Vendedores
