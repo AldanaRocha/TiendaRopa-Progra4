@@ -13,14 +13,21 @@
                     
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+                    <div class="mb-4 text-center">
+                    <h5 class="mb-3">Tu Avatar Actual</h5>
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" 
+                            alt="Avatar actual" 
+                            class="rounded-circle border border-2 border-secondary" 
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'images/default-avatar.png' %}" 
+                            alt="Avatar por defecto" 
+                            class="rounded-circle border border-2 border-secondary" 
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                    {% endif %}
+                 </div>
 
-                        <div class="mb-4 text-center">
-                            <h5 class="mb-3">Tu Avatar Actual</h5>
-                            <img src="{{ user.profile.avatar.url }}" 
-                                 alt="Avatar actual" 
-                                 class="rounded-circle border border-2 border-secondary" 
-                                 style="width: 150px; height: 150px; object-fit: cover;">
-                        </div>
 
                         <fieldset class="form-group border p-3 mb-4">
                             <legend class="border-bottom mb-4 px-2 fs-5">Datos de la Cuenta</legend>

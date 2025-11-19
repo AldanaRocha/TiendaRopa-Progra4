@@ -22,9 +22,9 @@
             <!-- Avatar preview -->
             <div class="text-center mb-4">
                 {% if user.profile.avatar %}
-                    <img id="avatarPreview" src="{{ user.profile.avatar.url }}" alt="Avatar" class="rounded-circle" width="120">
+                    <img id="avatarPreview" src="{{ user.profile.avatar.url }}" alt="Avatar" class="rounded-circle" width="120" height="120" style="object-fit: cover;">
                 {% else %}
-                    <img id="avatarPreview" src="https://via.placeholder.com/120" alt="Avatar" class="rounded-circle">
+                    <img id="avatarPreview" src="https://via.placeholder.com/120?text=Sin+Avatar" alt="Avatar" class="rounded-circle" width="120" height="120">
                 {% endif %}
             </div>
 
@@ -53,10 +53,9 @@
                 {% endif %}
             </div>
 
-            <div class="text-center d-flex justify-content-center gap-2"">
-                <button type="submit" class="btn btn-primary me-2">Guardar</button>
-                <button href="{% url 'perfil:profile' %}" class="btn btn-primary">Salir</button>
-
+            <div class="text-center d-flex justify-content-center gap-2">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'perfil:profile' %}" class="btn btn-secondary">Salir</a>
             </div>
         </form>
     </div>
@@ -76,4 +75,3 @@
     }
 </script>
 {% endblock %}
-
