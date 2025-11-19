@@ -139,6 +139,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # Opcional pero recomendado para mejorar la compatibilidad
 SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
 
 # Config del proveedor Google (evita confirmaciones extra)
 SOCIALACCOUNT_PROVIDERS = {
